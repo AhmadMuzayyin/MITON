@@ -91,7 +91,7 @@
             <li class="nav-item dropdown">
                 <a class="nav-link p-0 clear" href="#" data-toggle="dropdown">
                     <span class="avatar w-32">
-                        <img src="{{ asset('storage/uploads') . '/' . Auth()->user()->foto }}" alt="profile">
+                        <img src="{{ asset('storage/uploads') . '/' . Auth()->user()->foto ?? 'default.jpg' }}" alt="profile">
                         <i class="on b-white bottom"></i>
                     </span>
                 </a>

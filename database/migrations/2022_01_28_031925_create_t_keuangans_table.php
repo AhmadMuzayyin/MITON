@@ -21,7 +21,7 @@ class CreateTKeuangansTable extends Migration
             $table->integer('kondisi');
             $table->foreignId('user_id');
             $table->foreignId('month_id')->nullable();
-            $table->integer('anggaran')->nullable();
+            $table->bigInteger('anggaran')->nullable();
             $table->string('progres')->nullable();
             $table->timestamps();
         });

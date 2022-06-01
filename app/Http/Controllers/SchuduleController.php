@@ -26,18 +26,22 @@ class SchuduleController extends Controller
     {
         if (Auth()->user()->isAdmin != 1) {
             $value = Activity::join('schedules', 'activities.id', '=', 'schedules.activity_id')->where('user_id', Auth()->user()->id)->where('pak_id', session()->get('pak_id'))->get();
-            return view('admin.entry.schedule',
+            return view(
+                'admin.entry.schedule',
+                [
+                    'page' => 'index',
+                    'data' => $value ? $value : '',
+                ]
+            );
+        }
+        $value = Activity::join('schedules', 'activities.id', '=', 'schedules.activity_id')->where('pak_id', session()->get('pak_id'))->get();
+        return view(
+            'admin.entry.schedule',
             [
                 'page' => 'index',
                 'data' => $value ? $value : '',
-            ]);
-        }
-        $value = Activity::join('schedules', 'activities.id', '=', 'schedules.activity_id')->where('pak_id', session()->get('pak_id'))->get();
-        return view('admin.entry.schedule',
-        [
-            'page' => 'index',
-            'data' => $value ? $value : '',
-        ]);
+            ]
+        );
     }
 
     public function edit(Schedule $schedule)
@@ -62,7 +66,7 @@ class SchuduleController extends Controller
         return view('admin.entry.schedule', [
             'page' => 'PPTK',
             'data' => $schedule,
-            'Userpptk' => UserPPTK::all(),
+            'Userpptk' => UserPPTK::where('user_id', Auth()->user()->id)->get(),
             'pptk' => PPTK::firstWhere('schedule_id', $schedule->id)
         ]);
     }

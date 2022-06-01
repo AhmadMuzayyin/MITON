@@ -15,6 +15,7 @@ class CreateUserPPTKSTable extends Migration
     {
         Schema::create('user_p_p_t_k_s', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id');
             $table->string('nama');
             $table->string('nip')->uniqid;
             $table->timestamps();

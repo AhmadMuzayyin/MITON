@@ -18,7 +18,7 @@ class CreateAnggaransTable extends Migration
             $table->foreignId('activity_id');
             $table->foreignId('pak_id');
             $table->string('kondisi');
-            $table->integer('anggaran');
+            $table->bigInteger('anggaran');
             $table->timestamps();
         });
     }
