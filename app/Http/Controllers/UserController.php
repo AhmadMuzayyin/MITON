@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Activity;
 use App\Exports\UsersExport;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
 
 class UserController extends Controller
@@ -22,7 +24,7 @@ class UserController extends Controller
     {
         return view('admin.user.index', [
             'page' => 'index',
-            'data' =>User::all()
+            'data' => User::all()
         ]);
     }
 
@@ -47,13 +49,17 @@ class UserController extends Controller
     public function store(Request $request)
     {
         // dd($request->all());
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'kode' => 'required|unique:users,kode_SKPD',
-            'username' => 'required|unique:users'
+            'username' => 'required|unique:users',
+            'namaoperator' => 'required|unique:users,nama_OPERATOR',
         ]);
+        if ($validator->fails()) {
+            return back()->with('error', $validator->errors());
+        }
         try {
             $user = new User;
-            $fileName = $request->file('profil') ? time().'_'.$request->file('profil')->getClientOriginalName() : 'default.jpg';
+            $fileName = $request->file('profil') ? time() . '_' . $request->file('profil')->getClientOriginalName() : 'default.jpg';
             $request->file('profil') ? $request->file('profil')->storeAs('public/uploads', $fileName) : '';
 
             $user->kode_SKPD = $request->kode;
@@ -70,8 +76,8 @@ class UserController extends Controller
             $user->save();
 
             return redirect()->route('user.index')->with('success', 'Data berhasil ditambah!');
-        } catch (\Throwable $th) {
-            return back()->with('tryError', $th->getMessage());
+        } catch (QueryException $th) {
+            return back()->with('tryError', $th->errorInfo);
         }
     }
 
@@ -112,7 +118,7 @@ class UserController extends Controller
         // dd($request->all());
         try {
             $user = User::find($request->id);
-            $fileName = $request->file('profil') ? time().'_'.$request->file('profil')->getClientOriginalName() : Auth()->user()->foto;
+            $fileName = $request->file('profil') ? time() . '_' . $request->file('profil')->getClientOriginalName() : Auth()->user()->foto;
             $request->file('profil') ? $request->file('profil')->move(public_path('uploads'), $fileName) : '';
             $password = $request->password ? bcrypt($request->password) : Auth()->user()->password;
             $user->kode_SKPD = $request->kode;
@@ -129,8 +135,8 @@ class UserController extends Controller
             $user->save();
 
             return redirect()->route('user.index')->with('success', 'Data berhasil ditambah!');
-        } catch (\Throwable $th) {
-            return response()->json(['tryError',$th->getMessage()]);
+        } catch (QueryException $th) {
+            return back()->with(['tryError', $th->errorInfo]);
         }
     }
 
@@ -143,7 +149,7 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         try {
-            File::delete(public_path('storage/uploads/'.$user->foto));
+            File::delete(public_path('storage/uploads/' . $user->foto));
             User::destroy($user->id);
             DB::table('targets')->where('user_id', $user->id)->delete();
             DB::table('t_keuangans')->where('user_id', $user->id)->delete();
@@ -151,7 +157,7 @@ class UserController extends Controller
             $activity = Activity::where('user_id', $user->id)->get();
             return response()->json(['success', 'Data berhasil dihapus']);
         } catch (\Throwable $th) {
-            return response()->json(['tryError',$th->getMessage()]);
+            return response()->json(['tryError', $th->getMessage()]);
         }
     }
 }
