@@ -2,7 +2,6 @@
 
 use Carbon\Carbon;
 use App\Http\Controllers\Login;
-use App\Models\InputActivation;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PakController;
 use App\Http\Controllers\PPTKController;

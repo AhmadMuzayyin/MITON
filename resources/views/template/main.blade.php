@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>MITON</title>
+    <title>RAFIKA | DASHBOARD</title>
     <meta name="description" content="Admin, Dashboard, Bootstrap, Bootstrap 4, Angular, AngularJS" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimal-ui" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -49,8 +49,6 @@
             @yield('content')
         </div>
         {{-- End of Content --}}
-
-        @include('template.theme')
 
         <!-- ############ LAYOUT END-->
 
