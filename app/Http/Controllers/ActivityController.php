@@ -42,30 +42,34 @@ class ActivityController extends Controller
         }
         $data = InputActivation::select('id', 'nama', 'status')->get()->groupBy('nama');
         $data2 = Activity::join('anggarans', 'activities.id', '=', 'anggarans.activity_id')->where('anggarans.pak_id', session()->get('pak_id'))->where('anggarans.kondisi', '=', session()->get('kondisi'))->where('user_id', Auth()->user()->id)->get();
-        $anggaran = Activity::join('anggarans', 'activities.id', '=', 'anggarans.activity_id')->where('user_id', Auth()->user()->id)->where('activities.pak_id', 
-        session()->get('pak_id'))->get();
-            if (session()->get('kondisi') == 1) {
-                if (!$data2->isEmpty()) {
-                    return view('admin.entry.kegiatan', [
-                        'page' => false,
-                        'data' => $data2,
-                        'aktif' => $data['Entry Kegiatan'],
-                    ]); 
-                }
-                return redirect()->route('anggaran.index');
+        $anggaran = Activity::join('anggarans', 'activities.id', '=', 'anggarans.activity_id')->where('user_id', Auth()->user()->id)->where(
+            'activities.pak_id',
+            session()->get('pak_id')
+        )->get();
+        if (session()->get('kondisi') == 1) {
+            if (!$data2->isEmpty()) {
+                return view('admin.entry.kegiatan', [
+                    'page' => false,
+                    'data' => $data2,
+                    'aktif' => $data['Entry Kegiatan'],
+                ]);
             }
-            return view('admin.entry.kegiatan', [
-                'page' => false,
-                'data' => $data2,
-                'aktif' => $data['Entry Kegiatan'],
-            ]); 
+            return redirect()->route('anggaran.index');
+        }
+        return view('admin.entry.kegiatan', [
+            'page' => false,
+            'data' => $data2,
+            'aktif' => $data['Entry Kegiatan'],
+        ]);
     }
     public function create()
     {
-        return view('admin.entry.kegiatan',
-        [
-            'page' => 'create'
-        ]);
+        return view(
+            'admin.entry.kegiatan',
+            [
+                'page' => 'create'
+            ]
+        );
     }
     public function store(Request $request)
     {
@@ -73,7 +77,7 @@ class ActivityController extends Controller
         try {
             $lp = json_encode($request->laporan);
             $a = new Activity;
-            foreach(json_decode($lp) as $val){
+            foreach (json_decode($lp) as $val) {
                 if ($val == "dau") {
                     $a->dau = 1;
                 }
@@ -96,11 +100,11 @@ class ActivityController extends Controller
             $a->program = $request->program;
             if ($request->anggaran >= 250000000) {
                 $a->keterangan = "LELANG";
-            }else{
+            } else {
                 $a->keterangan = "NON LELANG";
             }
             $a->save();
-                
+
             $anggaran = new Anggaran;
             $anggaran->activity_id = $a->id;
             $anggaran->pak_id = session()->get('pak_id');
@@ -112,10 +116,9 @@ class ActivityController extends Controller
             $s->activity_id = $a->id;
             $s->persentase = 0;
             $s->save();
-            return redirect()->route('activity.index')->with('success', 'Data berhasil ditambah!');
-
+            return redirect()->route('activity.index')->with('success', 'Data Sub Kegiatan berhasil ditambah!');
         } catch (\Throwable $th) {
-            return response()->json(['tryError',$th->getMessage()]);
+            return response()->json(['tryError', $th->getMessage()]);
         }
     }
 
@@ -146,24 +149,24 @@ class ActivityController extends Controller
             $activity = Activity::find($request->id);
             $lp = json_encode($request->laporan);
             $collect = json_decode($lp);
-            if(in_array('dau', $collect)){
+            if (in_array('dau', $collect)) {
                 $activity->dau = 1;
                 $activity->save();
-            }else{
+            } else {
                 $activity->dau = null;
                 $activity->save();
             }
-            if(in_array('dak', $collect)){
+            if (in_array('dak', $collect)) {
                 $activity->dak = 1;
                 $activity->save();
-            }else{
+            } else {
                 $activity->dak = null;
                 $activity->save();
             }
-            if(in_array('dbhc', $collect)){
+            if (in_array('dbhc', $collect)) {
                 $activity->dbhc = 1;
                 $activity->save();
-            }else{
+            } else {
                 $activity->dbhc = null;
                 $activity->save();
             }
@@ -177,7 +180,7 @@ class ActivityController extends Controller
             $activity->program = $request->program;
             if ($request->anggaran >= 250000000) {
                 $activity->keterangan = "LELANG";
-            }else{
+            } else {
                 $activity->keterangan = "NON LELANG";
             }
             $activity->save();
@@ -189,10 +192,10 @@ class ActivityController extends Controller
                 );
                 Report::where('activity_id', $request->id)->update($data);
             }
-            
+
             return response()->json(['success', 'Data berhasil diupdate!']);
         } catch (\Throwable $th) {
-            return response()->json(['tryError',$th->getMessage()]);
+            return response()->json(['tryError', $th->getMessage()]);
         }
     }
 
@@ -211,10 +214,11 @@ class ActivityController extends Controller
             Activity::destroy($activity->id);
             return response()->json(['success', 'Data berhasil dihapus']);
         } catch (\Throwable $th) {
-            return response()->json(['tryError',$th->getMessage()]);
+            return response()->json(['tryError', $th->getMessage()]);
         }
     }
-    public function show(){
+    public function show()
+    {
         // return Excel::download(new ActivityExport, 'SUB KEGIATAN.xlsx');
         return (new ActivityExport)->download('SUB KEGIATAN.xlsx');
     }

@@ -24,7 +24,7 @@ class UserController extends Controller
     {
         return view('admin.user.index', [
             'page' => 'index',
-            'data' => User::all()->skip(1)
+            'data' => User::all()
         ]);
     }
 

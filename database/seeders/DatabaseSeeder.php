@@ -27,19 +27,6 @@ class DatabaseSeeder extends Seeder
     {
         // \App\Models\User::factory(10)->create();
         User::create([
-            'kode_SKPD' => '1.0',
-            'nama_SKPD' => 'admin',
-            'nama_operator' => 'Ahmad Muzayyin',
-            'no_hp' => '123456789',
-            'no_kantor' => '4321',
-            'alamat_kantor' => 'Pamekasan',
-            'username' => 'superadmin',
-            'password' => bcrypt('150599Ahmad'),
-            'nama_KPA' => 'Ahmad Muzayyin',
-            'foto' => 'admin.jpg',
-            'isAdmin' => true
-        ]);
-        User::create([
             'kode_SKPD' => '1.1.1',
             'nama_SKPD' => 'admin',
             'nama_operator' => 'Ahmad Muzayyin',

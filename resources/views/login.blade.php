@@ -50,7 +50,7 @@
             </div>
             <div class="p-a-md box-color r box-shadow-z1 text-color m-a">
                 <div class="m-b text-sm">
-                    Sign in with your MITON Account
+                    Sign in with your RAFIKA Account
                 </div>
                 <form name="form" action="{{ route('auth') }}" method="POST">
                     @csrf
@@ -67,15 +67,13 @@
                             <input type="checkbox" name="keep-session"><i class="primary"></i> Keep me signed in
                         </label>
                     </div> --}}
-                    <button type="submit" class="btn primary btn-block p-x-md">Sign in</button>
+                    <button type="submit" class="btn primary btn-block p-x-md" style="cursor: pointer;">Sign in</button>
                 </form>
+                <div class="p-v-lg text-center mt-4">
+                    <div><a ui-sref="access.forgot-password" href="#" class="text-primary _600">Forgot password?</a></div>
+                </div>
             </div>
 
-            <div class="p-v-lg text-center">
-                <div class="m-b"><a ui-sref="access.forgot-password" href="#" class="text-primary _600">Forgot password?</a></div>
-                {{-- <div>Do not have an account? <a ui-sref="access.signup" href="signup.html"
-                        class="text-primary _600">Sign up</a> --}}
-            </div>
         </div>
     </div>
 
