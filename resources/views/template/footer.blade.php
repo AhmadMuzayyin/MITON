@@ -13,14 +13,14 @@
 
 <script src="{{ url('assets/scripts/palette.js') }}"></script>
 <script src="{{ url('assets/scripts/ui-load.js') }}"></script>
-<script src="{{ url('assets/scripts/ui-jp.js') }}"></script>
-<script src="{{ url('assets/scripts/ui-include.js') }}"></script>
+<!-- <script src="{{ url('assets/scripts/ui-jp.js') }}"></script> -->
+<!-- <script src="{{ url('assets/scripts/ui-include.js') }}"></script> -->
 <script src="{{ url('assets/scripts/ui-device.js') }}"></script>
 <script src="{{ url('assets/scripts/ui-form.js') }}"></script>
-<script src="{{ url('assets/scripts/ui-nav.js') }}"></script>
+<!-- <script src="{{ url('assets/scripts/ui-nav.js') }}"></script> -->
 {{-- <script src="{{ url('assets/scripts/ui-screenfull.js') }}"></script> --}}
 <script src="{{ url('assets/scripts/ui-scroll-to.js') }}"></script>
-<script src="{{ url('assets/scripts/ui-toggle-class.js') }}"></script>
+<!-- <script src="{{ url('assets/scripts/ui-toggle-class.js') }}"></script> -->
 
 <script src="{{ url('assets/scripts/app.js') }}"></script>
 

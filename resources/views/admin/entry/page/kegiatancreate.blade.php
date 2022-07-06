@@ -2,8 +2,7 @@
     <div class="col-sm-12 col-md-12">
         <div class="box">
             <div class="box-header">
-                <a href="{{ route('activity.index') }}"
-                    class="md-btn md-raised m-b-sm w-xs blue text-decoration-none text-white" role="button">View</a>
+                <a href="{{ route('activity.index') }}" class="md-btn md-raised m-b-sm w-xs blue text-decoration-none text-white" role="button">View</a>
             </div>
             <div class="box-body">
                 <h5>Form Entry</h5>
@@ -14,8 +13,7 @@
                         <div class="col-md -col-sm col-lg">
                             <label for="rek">NOMOR REKENING</label>
                             <small class="text-danger">Mohon diisi dengan lengkap dan benar</small>
-                            <input type="text" class="form-control" id="rek" name="rek"
-                                placeholder="Contoh: 4.01.03.20.2.05.01" required autofocus>
+                            <input type="text" class="form-control" id="rek" name="rek" placeholder="Contoh: 4.01.03.20.2.05.01" required autofocus>
                         </div>
                         <div class="col-md -col-sm col-lg">
                             <label for="dana">SUMBER DANA</label>
@@ -78,22 +76,19 @@
                                 <div class="col">
                                     <div class="form-group">
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="gridCheck"
-                                                name="laporan[]" value="dau">
+                                            <input class="form-check-input" type="checkbox" id="gridCheck" name="laporan[]" value="dau">
                                             <label class="form-check-label" for="gridCheck">
                                                 DAU
                                             </label>
                                         </div>
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="gridCheck"
-                                                name="laporan[]" value="dak">
+                                            <input class="form-check-input" type="checkbox" id="gridCheck" name="laporan[]" value="dak">
                                             <label class="form-check-label" for="gridCheck">
                                                 DAK
                                             </label>
                                         </div>
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="gridCheck"
-                                                name="laporan[]" value="dbhc">
+                                            <input class="form-check-input" type="checkbox" id="gridCheck" name="laporan[]" value="dbhc">
                                             <label class="form-check-label" for="gridCheck">
                                                 DBHC
                                             </label>
@@ -110,15 +105,13 @@
                                 <div class="col">
                                     <div class="form-group">
                                         <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="program" id="gridRadios1"
-                                                value="Ya" checked>
+                                            <input class="form-check-input" type="radio" name="program" id="gridRadios1" value="Ya" checked>
                                             <label class="form-check-label" for="gridRadios1">
                                                 Ya
                                             </label>
                                         </div>
                                         <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="program" id="gridRadios1"
-                                                value="Tidak" checked>
+                                            <input class="form-check-input" type="radio" name="program" id="gridRadios1" value="Tidak" checked>
                                             <label class="form-check-label" for="gridRadios1">
                                                 Tidak
                                             </label>
@@ -130,11 +123,8 @@
                     </div>
                     <div class="row">
                         <div class="col">
-                            <button type="submit" class="md-btn md-raised m-b-sm w-xs blue text-decoration-none"
-                                role="button">SIMPAN</button>
-                            <button type="reset"
-                                class="md-btn md-raised m-b-sm w-xs orange text-decoration-none text-white"
-                                role="button">RESET</button>
+                            <button type="submit" class="md-btn md-raised m-b-sm w-xs blue text-decoration-none" role="button">SIMPAN</button>
+                            <button type="reset" class="md-btn md-raised m-b-sm w-xs orange text-decoration-none text-white" role="button">RESET</button>
                         </div>
                     </div>
                 </form>
@@ -142,3 +132,64 @@
         </div>
     </div>
 </div>
+<script>
+    $(document).ready(function() {
+        $("#addActivity").validate({
+            rules: {
+                subkegiatan: "required",
+                anggaran: {
+                    required: true,
+                    minlength: 7
+                },
+                kegiatan: "required",
+                rek: {
+                    required: true,
+                    minlength: 5
+                },
+                "laporan[]": {
+                    required: true,
+                    minlength: 1
+                }
+            },
+            messages: {
+                rek: {
+                    minlength: "NOMOR REKENIK minimal 5 digit!"
+                },
+                anggaran: {
+                    minlength: "Minimal anggaran 1.000.000!"
+                },
+                "laporan[]": "Harap pilih min 1 laporan!"
+            },
+            errorElement: "em",
+            errorPlacement: function(error, element) {
+                // Add the `invalid-feedback` class to the error element
+                error.addClass("invalid-feedback");
+                let lp = document.getElementsByClassName("lpError");
+
+                if (element.prop("type") === "checkbox") {
+                    error.append(lp);
+                } else {
+                    error.insertAfter(element);
+                }
+            },
+            highlight: function(element, errorClass, validClass) {
+                $(element).addClass("is-invalid").removeClass("is-valid");
+            },
+            unhighlight: function(element, errorClass, validClass) {
+                $(element).addClass("is-valid").removeClass("is-invalid");
+            }
+        });
+
+    });
+
+    function select() {
+        var select = document.getElementById('pengadaan');
+        var option = select.options[select.selectedIndex];
+        if (option.value == "3") {
+            $('#opt').replaceWith(`<option value="6" >
+                                       Seleksi
+                                  </option>`);
+        }
+    }
+    select();
+</script>

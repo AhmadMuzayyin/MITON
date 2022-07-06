@@ -144,8 +144,7 @@
 
             $.ajax({
                 type: 'POST',
-                url: '{{ route('
-                kegiatan.up ') }}',
+                url: '{{ route("kegiatan.up") }}',
                 data: {
                     _token: _token,
                     id: id,
@@ -165,8 +164,7 @@
                     if ($.isEmptyObject(data.error)) {
                         console.log(data);
                         // window.location.href =
-                        //     '{{ route('
-                        // activity.index ') }}'
+                        //     '{{ route("activity.index") }}'
                     } else {
                         printErrorMsg(data.error);
                     }
@@ -180,68 +178,6 @@
             $(form).submit();
         }
     });
-
-    $(document).ready(function() {
-        $("#addActivity").validate({
-            rules: {
-                subkegiatan: "required",
-                anggaran: {
-                    required: true,
-                    minlength: 7
-                },
-                kegiatan: "required",
-                rek: {
-                    required: true,
-                    minlength: 5
-                },
-                "laporan[]": {
-                    required: true,
-                    minlength: 1
-                }
-            },
-            messages: {
-                rek: {
-                    minlength: "NOMOR REKENIK minimal 5 digit!"
-                },
-                anggaran: {
-                    minlength: "Minimal anggaran 1.000.000!"
-                },
-                "laporan[]": "Harap pilih min 1 laporan!"
-            },
-            errorElement: "em",
-            errorPlacement: function(error, element) {
-                // Add the `invalid-feedback` class to the error element
-                error.addClass("invalid-feedback");
-                let lp = document.getElementsByClassName("lpError");
-
-                if (element.prop("type") === "checkbox") {
-                    error.append(lp);
-                } else {
-                    error.insertAfter(element);
-                }
-            },
-            highlight: function(element, errorClass, validClass) {
-                $(element).addClass("is-invalid").removeClass("is-valid");
-            },
-            unhighlight: function(element, errorClass, validClass) {
-                $(element).addClass("is-valid").removeClass("is-invalid");
-            }
-        });
-
-    });
-
-    function select() {
-        var select = document.getElementById('pengadaan');
-        var option = select.options[select.selectedIndex];
-        // console.log(option.value);
-
-        if (option.value == "3") {
-            $('#opt').replaceWith(`<option value="6" >
-                                       Seleksi
-                                  </option>`);
-        }
-    }
-    select();
 </script>
 <style>
     input::-webkit-outer-spin-button,
