@@ -162,9 +162,15 @@
                 },
                 success: function(data) {
                     if ($.isEmptyObject(data.error)) {
-                        console.log(data);
-                        // window.location.href =
-                        //     '{{ route("activity.index") }}'
+                        toastr.options =
+                            {
+                                "progressBar" : true
+                            }
+                        toastr.success("Data sub kegiatan berhasil diperbarui!", "Success");
+                        window.setTimeout(function() {
+                                window.location.href =
+                                    '{{ route("activity.index") }}'
+                            }, 3000);
                     } else {
                         printErrorMsg(data.error);
                     }

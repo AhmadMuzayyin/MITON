@@ -101,9 +101,23 @@
                         },
                         success: function(data) {
                             if ($.isEmptyObject(data.error)) {
-                                window.location.reload();
+                                toastr.options =
+                                {
+                                    "progressBar" : true
+                                }
+                            toastr.success("Data lokasi berhasil ditambah!", "Success");
+                                window.setTimeout(function() {
+                                    location.reload();
+                                }, 3000);
                             } else {
-                                printErrorMsg(data.error);
+                                toastr.options =
+                                {
+                                    "progressBar" : true
+                                }
+                            toastr.error("Gagal menambah data lokasi!", "error");
+                                window.setTimeout(function() {
+                                    location.reload();
+                                }, 3000);
                             }
                         }
                     });
@@ -124,11 +138,23 @@
                     },
                     success: function(data) {
                         if ($.isEmptyObject(data.error)) {
+                            toastr.options =
+                            {
+                                "progressBar" : true
+                            }
+                        toastr.success("Data lokasi berhasil dihapus!", "Success");
                             window.setTimeout(function() {
                                 location.reload();
-                            }, 1000);
+                            }, 3000);
                         } else {
-                            printErrorMsg(data.error);
+                            toastr.options =
+                            {
+                                "progressBar" : true
+                            }
+                        toastr.error("Gagal menghapus data lokasi!", "error");
+                            window.setTimeout(function() {
+                                location.reload();
+                            }, 3000);
                         }
                     }
                 });

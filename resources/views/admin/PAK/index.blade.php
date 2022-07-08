@@ -38,7 +38,7 @@
                                                     <form action="{{ route('pak.unlock') }}" method="POST"
                                                         class=" d-inline-block">
                                                         @csrf
-                                                        <input type="hidden" name="sebelum" value="{{ $s->lockpak[1] }}">
+                                                        <input type="hidden" name="sebelum" value="{{ $s->lockpak[0]->id }}">
                                                         <div class="btn-group">
                                                             <button
                                                                 class="md-btn md-raised m-b-sm {{ $s->lockpak[0]->status == 0 ? 'pink' : 'pink' }}">
@@ -98,14 +98,14 @@
 
         $('.addPAK').click(function() {
             var html = `
-                    <div class="box pak_html">
+                    <div class="box pak_html" id="pak_html">
                         <div class="box-body">
                             <form action="{{ route('pak.store') }}" method="POST">
                                 @csrf
                                   <div class="row">
                                       <div class="col">
-                                          <label for="nama">TAHUN PAK</label>
-                                          <input type="date" class="form-control" id="nama" name="nama" required>
+                                            <label for="pakDate">Tahun PAK</label>
+                                            <input type="text" class="form-control" id="pakDate" name="nama" autocomplete="off">
                                       </div>
                                   </div>
                                   <div class="row mt-3">
@@ -121,11 +121,18 @@
 
             $('.pakhtml').append(html);
             document.getElementById('addPAK').disabled = true;
+
+            const year = new Date().getFullYear();
+            $('#pakDate').yearpicker({
+                startYear: year,
+            });
+
+            $('#btl').click(function() {
+                $('#pak_html').remove()
+                document.getElementById('addPAK').disabled = false;
+            });
         });
 
-        $('#btl').click(function() {
-            $("div").remove(".pak_html");
-        });
 
         $(document).ready(function() {
             $(".deletePAK").click(function(e) {
@@ -139,12 +146,24 @@
                         _token: _token
                     },
                     success: function(data) {
-                        if ($.isEmptyObject(data.error)) {
-                            // window.setTimeout(function() {
-                            //     location.reload();
-                            // }, 1000);
+                        if(data.success){
+                        toastr.options =
+                            {
+                                "progressBar" : true
+                            }
+                        toastr.success("Data PAK berhasil dihapus!", "Success");
+                            window.setTimeout(function() {
+                                location.reload();
+                            }, 3000);
                         } else {
-                            printErrorMsg(data.error);
+                        toastr.options =
+                            {
+                                "progressBar" : true
+                            }
+                        toastr.error("Gagal menghapus data PAK!", "error");
+                        window.setTimeout(function() {
+                                location.reload();
+                            }, 1000);
                         }
                     }
                 });

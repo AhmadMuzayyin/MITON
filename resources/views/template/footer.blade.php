@@ -13,14 +13,14 @@
 
 <script src="{{ url('assets/scripts/palette.js') }}"></script>
 <script src="{{ url('assets/scripts/ui-load.js') }}"></script>
-<!-- <script src="{{ url('assets/scripts/ui-jp.js') }}"></script> -->
-<!-- <script src="{{ url('assets/scripts/ui-include.js') }}"></script> -->
+{{-- <script src="{{ url('assets/scripts/ui-jp.js') }}"></script> --}}
+{{-- <script src="{{ url('assets/scripts/ui-include.js') }}"></script> --}}
 <script src="{{ url('assets/scripts/ui-device.js') }}"></script>
 <script src="{{ url('assets/scripts/ui-form.js') }}"></script>
-<!-- <script src="{{ url('assets/scripts/ui-nav.js') }}"></script> -->
+<script src="{{ url('assets/scripts/ui-nav.js') }}"></script>
 {{-- <script src="{{ url('assets/scripts/ui-screenfull.js') }}"></script> --}}
 <script src="{{ url('assets/scripts/ui-scroll-to.js') }}"></script>
-<!-- <script src="{{ url('assets/scripts/ui-toggle-class.js') }}"></script> -->
+{{-- <script src="{{ url('assets/scripts/ui-toggle-class.js') }}"></script> --}}
 
 <script src="{{ url('assets/scripts/app.js') }}"></script>
 
@@ -30,8 +30,9 @@
 <script src="{{ url('assets/DataTable/Table/js/jquery.dataTables.min.js') }}"></script>
 <script src="{{ url('assets/DataTable/Table/js/dataTables.bootstrap4.min.js') }}"></script>
 <script src="{{ url('assets/validate/jquery.validate.js') }}"></script>
-
+<script src="{{ url('assets/libs/js/moment/moment.js') }}"></script>
+<script src="{{ url('assets/libs/jquery/eonasdan-bootstrap-datetimepicker/yearpicker.js') }}"></script>
 {{-- ChartsJS --}}
 <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.js" integrity="sha256-Y26AMvaIfrZ1EQU49pf6H4QzVTrOI8m9wQYKkftBt4s=" crossorigin="anonymous"></script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <!-- endbuild -->

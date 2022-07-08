@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <title>RAFIKA | DASHBOARD</title>
-    <meta name="description" content="Admin, Dashboard, Bootstrap, Bootstrap 4, Angular, AngularJS" />
+    <meta name="description" content="Realisasi Anggaran dan Kegiatan" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimal-ui" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
@@ -28,11 +28,12 @@
 
     {{-- DataTable --}}
     <link rel="stylesheet" href="{{ url('assets/DataTable/Table/css/dataTables.bootstrap4.min.css') }}">
-
+    <link rel="stylesheet" href="{{ url('assets/libs/jquery/eonasdan-bootstrap-datetimepicker/yearpicker.css') }}">
     <!-- build:css ../assets/styles/app.min.css -->
     <link rel="stylesheet" href="{{ url('assets/styles/app.css') }}" type="text/css" />
     <!-- endbuild -->
     <link rel="stylesheet" href="{{ url('assets/styles/font.css') }}" type="text/css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" integrity="sha512-vKMx8UnXk60zUwyUnUPM3HbQo8QfmNx7+ltw8Pm5zLusl1XIfwcxo8DbWCqMGKaWeNxWA8yrx5v3SaVpMvR3CA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
 <body>

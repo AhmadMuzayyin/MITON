@@ -121,6 +121,6 @@
         $(".navbar-toggleable-sm").collapse("hide");
     });
 
-    init();
+    // init();
     setTheme();
 })(jQuery);

@@ -22,13 +22,16 @@ class Login extends Controller
         if (Auth::attempt($cek)) {
             if (auth()->user()->isAdmin == 1) {
                 $request->session()->regenerate();
-                return redirect()->route('PAK')->with('success', 'Login Success!');
+                toastr()->success('Login Berhasil');
+                return redirect()->route('PAK');
             } else {
                 $request->session()->regenerate();
-                return redirect()->route('PAK')->with('success', 'Login Success!');
+                toastr()->success('Login Berhasil');
+                return redirect()->route('PAK');
             }
         }
-        return back()->with('error', 'Login Error!');
+        toastr()->error('Login gagal!');
+        return back();
     }
 
     public function logout()
@@ -37,6 +40,7 @@ class Login extends Controller
         request()->session()->invalidate();
         request()->session()->regenerateToken();
 
-        return redirect('/')->with('success', 'See you next time!');
+        toastr()->success('See you next time!');
+        return redirect('/');
     }
 }

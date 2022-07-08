@@ -34,11 +34,11 @@
                                                     <td>
                                                         <div class="progress">
                                                             <div class="progress-bar progress-bar-striped progress-bar-animated"
-                                                                role="progressbar" aria-valuenow="{{ $s->persentase }}"
+                                                                role="progressbar" aria-valuenow="{{ $s->persentase > 100 ? 100 : $s->persentase }}"
                                                                 aria-valuemin="0" aria-valuemax="100"
-                                                                style="width: {{ $s->persentase }}%">
-                                                                @if ($s->persentase > 0)
-                                                                    Complete {{ $s->persentase }}%
+                                                                style="width: {{ $s->persentase > 100 ? 100 : $s->persentase }}%">
+                                                                @if ($s->persentase >= 100)
+                                                                    Complete {{ $s->persentase > 100 ? 100 : $s->persentase }}%
                                                                 @endif
                                                             </div>
                                                         </div>

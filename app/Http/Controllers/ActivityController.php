@@ -116,7 +116,8 @@ class ActivityController extends Controller
             $s->activity_id = $a->id;
             $s->persentase = 0;
             $s->save();
-            return redirect()->route('activity.index')->with('success', 'Data Sub Kegiatan berhasil ditambah!');
+            toastr()->success('Data Sub Kegiatan berhasil ditambah!');
+            return redirect()->route('activity.index');
         } catch (\Throwable $th) {
             return response()->json(['tryError', $th->getMessage()]);
         }
@@ -193,7 +194,7 @@ class ActivityController extends Controller
                 Report::where('activity_id', $request->id)->update($data);
             }
 
-            return response()->json(['success', 'Data berhasil diupdate!']);
+            return response()->json(['success', 'Data sub kegiatan berhasil diupdate!']);
         } catch (\Throwable $th) {
             return response()->json(['tryError', $th->getMessage()]);
         }

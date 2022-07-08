@@ -44,24 +44,30 @@ class PakController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
         try {
-            $pak = new Pak();
-            $pak->nama = date('Y', strtotime($request->nama));
-            $pak->save();
+            $p = Pak::firstWhere('nama', $request->nama);
+            if (!$p) {
+                $pak = new Pak();
+                $pak->nama = $request->nama;
+                $pak->save();
 
-            for ($i = 0; $i < 2; $i++) {
-                $lk = new LockPak();
-                $lk->pak_id = $pak->id;
-                $lk->kondisi = $i;
-                $lk->status = $i;
-                $lk->save();
+                for ($i = 0; $i < 2; $i++) {
+                    $lk = new LockPak();
+                    $lk->pak_id = $pak->id;
+                    $lk->kondisi = $i;
+                    $lk->status = 0;
+                    $lk->save();
+                }
+
+                toastr()->success('Data PAK berhasil ditambah!');
+                return redirect()->route('pak.index');
+            } else {
+                toastr()->error('Data PAK sudah ada!');
+                return redirect()->back();
             }
-
-
-            return redirect()->route('pak.index')->with('success', 'Data Berhasil ditambah!');
-        } catch (\Throwable $th) {
-            return response()->json(['tryErr', $th->getMessage()]);
+        } catch (\Illuminate\Database\QueryException $th) {
+            toastr()->error('Gagal menambahkan data PAK!');
+            return redirect()->route('pak.index');
         }
     }
 
@@ -87,16 +93,18 @@ class PakController extends Controller
             if ($p->count() == 1) {
                 return response()->json(['error', 'Data PAK tidak boleh kosong!']);
             } else {
-                $pk = Pak::firstWhere('id', $pak->id);
+                $pk = LockPak::firstWhere('pak_id', $pak->id);
+                dd($pk);
                 if ($pk->status == 1) {
                     return response()->json(['error', 'Data PAK sedang aktif']);
+                } else {
+                    LockPak::where('pak_id', $pak->id)->delete();
+                    Pak::destroy($pak->id);
+                    return response()->json(['success', 'Data berhasil dihapus']);
                 }
-
-                Pak::destroy($pak->id);
-                return response()->json(['success', 'Data berhasil dihapus']);
             }
-        } catch (\Throwable $th) {
-            return response()->json(['tryErr', $th->getMessage()]);
+        } catch (\Illuminate\Database\QueryException $th) {
+            return response()->json(['error', $th->errorInfo]);
         }
     }
 
@@ -104,33 +112,41 @@ class PakController extends Controller
     {
         // dd($request->all());
         try {
-            if ($request->sebelum != null) {
+            if (isset($request->sebelum)) {
                 $kunci = LockPak::firstWhere('id', $request->sebelum);
                 if ($kunci) {
                     if ($kunci->status == 0) {
                         $s = 1;
+                        $kunci->status = $s;
+                        $kunci->save();
+                        toastr()->success('PAK Sebelum berhasil di buka!');
                     } else {
                         $s = 0;
+                        $kunci->status = $s;
+                        $kunci->save();
+                        toastr()->success('PAK Sebelum berhasil di kunci!');
                     }
                 }
-                $kunci->status = $s;
-                $kunci->save();
             } else {
                 $kunci = LockPak::firstWhere('id', $request->sesudah);
                 if ($kunci) {
                     if ($kunci->status == 0) {
                         $s = 1;
+                        $kunci->status = $s;
+                        $kunci->save();
+                        toastr()->success('PAK Sesudah berhasil di buka!');
                     } else {
                         $s = 0;
+                        $kunci->status = $s;
+                        $kunci->save();
+                        toastr()->success('PAK Sesudah berhasil di kunci!');
                     }
                 }
-                $kunci->status = $s;
-                $kunci->save();
             }
-
-            return redirect()->route('pak.index')->with('success', 'PAK dibuka!');
-        } catch (\Throwable $th) {
-            return response()->json(['tryErr', $th->getMessage()]);
+            return redirect()->route('pak.index');
+        } catch (\Illuminate\Database\QueryException $th) {
+            toastr()->error('Gagal melakukan perubahan PAK!');
+            redirect()->back();
         }
     }
 }
