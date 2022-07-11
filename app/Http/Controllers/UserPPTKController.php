@@ -18,9 +18,11 @@ class UserPPTKController extends Controller
             $up->nip = $request->nip;
             $up->save();
 
-            return redirect('/schedule/' . $request->id . '/edit/pptk')->with('success', 'Data berhasil ditambah');
-        } catch (\Throwable $th) {
-            return response()->json(['tryError', $th->getMessage()]);
+            toastr()->success('Berhasil menambah data PPTK!');
+            return redirect('/schedule/' . $request->id . '/edit/pptk');
+        } catch (\Illuminate\Database\QueryException $th) {
+            toastr()->error('Gagal menambah data PPTK');
+            return redirect()->back();
         }
     }
     public function updateUser(Request $request)
@@ -30,18 +32,18 @@ class UserPPTKController extends Controller
             $user->nip = $request->nip;
             $user->nama = $request->nama;
             $user->save();
-            return response()->json(['success' => 'Data Berhasil dirubah!']);
-        } catch (\Throwable $th) {
-            return response()->json(['tryErr' => $th->getMessage()]);
+            return response()->json(['success' => 'Data PPTK Berhasil dirubah!']);
+        } catch (\Illuminate\Database\QueryException $th) {
+            return response()->json(['error' => $th->errorInfo]);
         }
     }
     public function destroy(UserPPTK $UserPPTK)
     {
         try {
             UserPPTK::destroy($UserPPTK->id);
-            return response()->json(['success' => 'Data berhasil dihapus!']);
-        } catch (\Throwable $th) {
-            return response()->json(['tryErr' => $th->getMessage()]);
+            return response()->json(['success' => 'Data PPTK berhasil dihapus!']);
+        } catch (\Illuminate\Database\QueryException $th) {
+            return response()->json(['error' => $th->errorInfo]);
         }
     }
 }

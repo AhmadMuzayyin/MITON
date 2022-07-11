@@ -18,7 +18,7 @@ class PPTKController extends Controller
                 $p->schedule_id = $request->id;
                 $p->user_p_p_t_k_id = $request->pptk;
                 $p->save();
-            }else{
+            } else {
                 $pptk = new PPTK;
                 $pptk->schedule_id = $request->id;
                 $pptk->user_p_p_t_k_id = $request->pptk;
@@ -31,19 +31,11 @@ class PPTKController extends Controller
                 $s->persentase = $s->persentase + 20;
                 $s->save();
             }
-            
 
-            return redirect('/schedule/'. $request->id .'/edit/pptk')->with('success', 'Data berhasil ditambah!');
+            toastr()->success('Berhasil menyimpan data PPTK!');
+            return redirect('/schedule/' . $request->id . '/edit/pptk');
         } catch (\Throwable $th) {
-            return response()->json(['tryError',$th->getMessage()]);
+            return response()->json(['tryError', $th->getMessage()]);
         }
-    }
-    public function update(Request $request, PPTK $pPTK)
-    {
-        //
-    }
-    public function destroy(PPTK $pPTK)
-    {
-        //
     }
 }

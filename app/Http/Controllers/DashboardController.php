@@ -179,33 +179,55 @@ class DashboardController extends Controller
       if ($request->file('foto') != null) {
         $fileName = Auth()->user()->username . now()->format('d-M-Y') . time() . '.' . $request->file('foto')->getClientOriginalName();
         $request->file('foto')->storeAs('public/uploads', $fileName);
-        $password = bcrypt($request->password) ?? $user->password;
-        // dd($password);
-        // $password = bcrypt($request->password);
-        $user->update([
-          'kode_SKPD' => $request->kode_skpd,
-          'nama_SKPD' => $request->nama_skpd,
-          'nama_KPA' => $request->nama_kpa,
-          'nama_operator' => $request->nama_operator,
-          'no_hp' => $request->no_hp,
-          'no_kantor' => $request->no_kantor,
-          'password' => $password,
-          'foto' => $fileName
-        ]);
+        if ($request->password) {
+          $user->update([
+            'kode_SKPD' => $request->kode_skpd,
+            'nama_SKPD' => $request->nama_skpd,
+            'nama_KPA' => $request->nama_kpa,
+            'nama_operator' => $request->nama_operator,
+            'no_hp' => $request->no_hp,
+            'no_kantor' => $request->no_kantor,
+            'password' => bcrypt($request->password),
+            'foto' => $fileName
+          ]);
+        } else {
+          $user->update([
+            'kode_SKPD' => $request->kode_skpd,
+            'nama_SKPD' => $request->nama_skpd,
+            'nama_KPA' => $request->nama_kpa,
+            'nama_operator' => $request->nama_operator,
+            'no_hp' => $request->no_hp,
+            'no_kantor' => $request->no_kantor,
+            'foto' => $fileName
+          ]);
+        }
       } else {
-        $user->update([
-          'kode_SKPD' => $request->kode_skpd,
-          'nama_SKPD' => $request->nama_skpd,
-          'nama_KPA' => $request->nama_kpa,
-          'nama_operator' => $request->nama_operator,
-          'no_hp' => $request->no_hp,
-          'no_kantor' => $request->no_kantor,
-          'password' => bcrypt($request->password)
-        ]);
+        if ($request->password) {
+          $user->update([
+            'kode_SKPD' => $request->kode_skpd,
+            'nama_SKPD' => $request->nama_skpd,
+            'nama_KPA' => $request->nama_kpa,
+            'nama_operator' => $request->nama_operator,
+            'no_hp' => $request->no_hp,
+            'no_kantor' => $request->no_kantor,
+            'password' => bcrypt($request->password)
+          ]);
+        } else {
+          $user->update([
+            'kode_SKPD' => $request->kode_skpd,
+            'nama_SKPD' => $request->nama_skpd,
+            'nama_KPA' => $request->nama_kpa,
+            'nama_operator' => $request->nama_operator,
+            'no_hp' => $request->no_hp,
+            'no_kantor' => $request->no_kantor,
+          ]);
+        }
       }
-      return back()->with('success', 'Berhasil merubah data profil anda.');
-    } catch (\Throwable $th) {
-      return back()->with('error', $th->getMessage());
+
+      toastr()->success('Berhasil merubah profil anda!');
+      return back();
+    } catch (\Illuminate\Database\QueryException $th) {
+      return back()->with('error', $th->errorInfo);
     }
   }
 }

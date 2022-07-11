@@ -16,11 +16,6 @@ use Illuminate\Support\Facades\Auth;
 
 class ReportController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         if (Auth()->user()->isAdmin != 1) {
@@ -42,7 +37,7 @@ class ReportController extends Controller
                     'batas' => $now,
                     'selected' => $selected,
                     'aktif' => $aktif['Laporan RFK'],
-                'anggaran' => isset($anggaran) ? $anggaran->anggaran - $realisasi : 0,
+                    'anggaran' => isset($anggaran) ? $anggaran->anggaran - $realisasi : 0,
                 ]);
             } else {
                 $dana = request()->get('dana');
@@ -99,8 +94,9 @@ class ReportController extends Controller
             ]);
         }
     }
-    
-    public function getReport(Request $request){
+
+    public function getReport(Request $request)
+    {
         return response()->json([
             'success' => 'Success',
             'dana' => $request->dana,
@@ -110,78 +106,48 @@ class ReportController extends Controller
     public function store(Request $request)
     {
         try {
-            foreach($request->id as $key => $value){
+            foreach ($request->id as $key => $value) {
                 if ($request->kegiatan[$key] == null && $request->keuangan[$key] == null) {
-                    return redirect()->route('report.index')->with('report', 'Data tidak boleh kosong');
-                }else{
+                    toastr()->error('Data tidak boleh kosong!');
+                    return redirect()->route('report.index');
+                } else {
                     $r = Report::find($value);
-                    if($request->keuangan[$key] > $r->t_keuangan->anggaran){
-                        return redirect()->route('report.index')->with('report', 'Realisasi keuangan tidak boleh lebih besar dari anggaran yang telah ditentukan');
-                    }else{
-                            $id = Report::firstWhere('id', $value);
-                            $max = Activity::firstWhere('id', $id->activity_id);
-                            if ($request->kegiatan[$key] > $r->target->persentase) {
-                                return redirect()->route('report.index')->with('report', 'Realisasi keggiatan tidak boleh lebih besar dari target yang telah ditentukan');
-                            }else{
-                                if($r->month_id > 1){
-                                    $id = $r->id-1;
-                                    $r = Report::find($id);
-                                    $data = Report::find($value);
-                                    $data->keuangan_lalu = $r->keuangan_sekarang;
-                                    $data->kegiatan_lalu = $r->kegiatan_sekarang;
-                                    $data->keuangan_sekarang = $request->keuangan[$key];
-                                    $data->kegiatan_sekarang = $request->kegiatan[$key];
-                                    $data->kendala = $request->kendala[$key];
-                                    $data->status = 1;
-                                    $data->save();
-                                }
-                                    $data = Report::find($value);
-                                    $data->keuangan_sekarang = $request->keuangan[$key];
-                                    $data->kegiatan_sekarang = $request->kegiatan[$key];
-                                    $data->kendala = $request->kendala[$key];
-                                    $data->status = 1;
-                                    $data->save();
+                    if ($request->keuangan[$key] > $r->t_keuangan->anggaran) {
+                        toastr()->error('Realisasi keuangan tidak boleh lebih besar dari anggaran yang telah ditentukan!');
+                        return redirect()->route('report.index');
+                    } else {
+                        $id = Report::firstWhere('id', $value);
+                        $max = Activity::firstWhere('id', $id->activity_id);
+                        if ($request->kegiatan[$key] > $r->target->persentase) {
+                            toastr()->error('Realisasi keggiatan tidak boleh lebih besar dari target yang telah ditentukan!');
+                            return redirect()->route('report.index');
+                        } else {
+                            if ($r->month_id > 1) {
+                                $id = $r->id - 1;
+                                $r = Report::find($id);
+                                $data = Report::find($value);
+                                $data->keuangan_lalu = $r->keuangan_sekarang;
+                                $data->kegiatan_lalu = $r->kegiatan_sekarang;
+                                $data->keuangan_sekarang = $request->keuangan[$key];
+                                $data->kegiatan_sekarang = $request->kegiatan[$key];
+                                $data->kendala = $request->kendala[$key];
+                                $data->status = 1;
+                                $data->save();
                             }
+                            $data = Report::find($value);
+                            $data->keuangan_sekarang = $request->keuangan[$key];
+                            $data->kegiatan_sekarang = $request->kegiatan[$key];
+                            $data->kendala = $request->kendala[$key];
+                            $data->status = 1;
+                            $data->save();
                         }
                     }
+                }
             };
+            toastr()->success('Berhasil melakukan Report!');
             return redirect()->route('report.index');
-        } catch (\Throwable $th) {
-            return response()->json(['tryErr', $th->getMessage()]);
+        } catch (\Illuminate\Database\QueryException $th) {
+            return response()->json(['error', $th->errorInfo]);
         }
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Report  $report
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Report $report)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Report  $report
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Report $report)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Report  $report
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request)
-    {
-        //
     }
 }

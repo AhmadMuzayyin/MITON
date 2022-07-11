@@ -101,14 +101,7 @@
                         },
                         success: function(data) {
                             if ($.isEmptyObject(data.error)) {
-                                toastr.options =
-                                {
-                                    "progressBar" : true
-                                }
-                            toastr.success("Data lokasi berhasil ditambah!", "Success");
-                                window.setTimeout(function() {
                                     location.reload();
-                                }, 3000);
                             } else {
                                 toastr.options =
                                 {

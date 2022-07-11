@@ -94,9 +94,23 @@
                     },
                     success: function(data) {
                         if ($.isEmptyObject(data.error)) {
-                            location.reload();
+                            toastr.options =
+                            {
+                                "progressBar" : true
+                            }
+                            toastr.success("Data PPTK berhasil dihapus!", "Success");
+                            window.setTimeout(function() {
+                                location.reload();
+                            }, 3000);
                         } else {
-                            printErrorMsg(data.error);
+                            toastr.options =
+                            {
+                                "progressBar" : true
+                            }
+                            toastr.error("Gagal menghapus data PPTK!", "Error");
+                            window.setTimeout(function() {
+                                location.reload();
+                            }, 3000);
                         }
                     }
                 });
@@ -128,9 +142,23 @@
                     },
                     success: function(data) {
                         if ($.isEmptyObject(data.error)) {
-                            location.reload();
+                            toastr.options =
+                            {
+                                "progressBar" : true
+                            }
+                            toastr.success("Data PPTK berhasil diperbarui!", "Success");
+                            window.setTimeout(function() {
+                                location.reload();
+                            }, 3000);
                         } else {
-                            printErrorMsg(data.error);
+                            toastr.options =
+                            {
+                                "progressBar" : true
+                            }
+                            toastr.error("Gagal memperbarui data PPTK!", "Error");
+                            window.setTimeout(function() {
+                                location.reload();
+                            }, 3000);
                         }
                     }
                 });

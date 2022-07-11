@@ -7,7 +7,7 @@
             <a class="navbar-brand">
                 <div ui-include="'{{ url('assets/images/logo.svg') }}'"></div>
                 <img src="{{ url('assets/images/logo.png') }}" alt="." class="hide">
-                <span class="hidden-folded inline">MITON</span>
+                <span class="hidden-folded inline">RAFIKA</span>
             </a>
             <!-- / brand -->
         </div>

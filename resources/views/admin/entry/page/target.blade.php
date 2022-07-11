@@ -216,9 +216,20 @@
                     },
                     success: function(data) {
                         if ($.isEmptyObject(data.error)) {
-                            location.reload();
+                            toastr.options =
+                            {
+                                "progressBar" : true
+                            }
+                            toastr.success("Data target kegiatan dan keuangan berhasil disimpan!", "Success");
+                            window.setTimeout(function() {
+                                location.reload();
+                            }, 1000);
                         } else {
-                            alert(data.error)
+                            toastr.options =
+                            {
+                                "progressBar" : true
+                            }
+                            toastr.error(data.error, "Error");
                         }
                     }
                 });
