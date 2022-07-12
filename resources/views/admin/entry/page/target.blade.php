@@ -312,34 +312,20 @@
                     },
                     success: function(data) {
                         if ($.isEmptyObject(data.error)) {
-                            location.reload();
-                        } else {
-                            alert(data.error)
-                        }
-                    }
-                });
-            });
-        });
-
-        $(document).ready(function() {
-            $(".deleteActivity").click(function(e) {
-                e.preventDefault();
-                var _token = $("input[name='_token']").val();
-                var id = $("input[name='id']").val();
-                var Url = $(this).parents('form').attr('action');
-                $.ajax({
-                    type: 'DELETE',
-                    url: Url,
-                    data: {
-                        _token: _token
-                    },
-                    success: function(data) {
-                        if ($.isEmptyObject(data.error)) {
+                            toastr.options =
+                            {
+                                "progressBar" : true
+                            }
+                            toastr.success("Data target kegiatan dan keuangan berhasil diperbarui!", "Success");
                             window.setTimeout(function() {
                                 location.reload();
                             }, 1000);
                         } else {
-                            printErrorMsg(data.error);
+                            toastr.options =
+                            {
+                                "progressBar" : true
+                            }
+                            toastr.error(data.error, "Error");
                         }
                     }
                 });

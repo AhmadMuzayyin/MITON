@@ -112,10 +112,21 @@
                 },
                 success: function(data) {
                     if ($.isEmptyObject(data.error)) {
-                        location.reload();
-                    } else {
-                        printErrorMsg(data.error);
-                    }
+                            toastr.options =
+                            {
+                                "progressBar" : true
+                            }
+                            toastr.success("Data Sub Kegiatan berhasil dihapus!", "Success");
+                            window.setTimeout(function() {
+                                location.reload();
+                            }, 1000);
+                        } else {
+                            toastr.options =
+                            {
+                                "progressBar" : true
+                            }
+                            toastr.error(data.error, "Error");
+                        }
                 }
             });
         });
@@ -172,7 +183,11 @@
                                     '{{ route("activity.index") }}'
                             }, 3000);
                     } else {
-                        printErrorMsg(data.error);
+                        toastr.options =
+                            {
+                                "progressBar" : true
+                            }
+                            toastr.error(data.error, "Error");
                     }
                 }
             });

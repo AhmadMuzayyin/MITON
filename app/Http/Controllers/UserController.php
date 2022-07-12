@@ -5,6 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Activity;
 use App\Exports\UsersExport;
+use App\Models\Anggaran;
+use App\Models\Location;
+use App\Models\PPTK;
+use App\Models\Schedule;
+use App\Models\Volume;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -22,9 +27,10 @@ class UserController extends Controller
      */
     public function index()
     {
+        $data = User::all();
         return view('admin.user.index', [
             'page' => 'index',
-            'data' => User::all()
+            'data' => $data
         ]);
     }
 
@@ -35,9 +41,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('admin.user.index', [
-            'page' => 'create'
-        ]);
+        return view('admin.user.userCreate');
     }
 
     /**
@@ -51,16 +55,14 @@ class UserController extends Controller
         // dd($request->all());
         $validator = Validator::make($request->all(), [
             'kode' => 'required|unique:users,kode_SKPD',
-            'username' => 'required|unique:users',
-            'namaoperator' => 'required|unique:users,nama_OPERATOR',
+            'username' => 'required|unique:users,username',
         ]);
         if ($validator->fails()) {
-            return back()->with('error', $validator->errors());
+            toastr()->error($validator->errors());
+            return back();
         }
         try {
             $user = new User;
-            $fileName = $request->file('profil') ? time() . '_' . $request->file('profil')->getClientOriginalName() : 'default.jpg';
-            $request->file('profil') ? $request->file('profil')->storeAs('public/uploads', $fileName) : '';
 
             $user->kode_SKPD = $request->kode;
             $user->nama_SKPD = $request->skpd;
@@ -71,13 +73,15 @@ class UserController extends Controller
             $user->username = $request->username;
             $user->password = bcrypt($request->password);
             $user->nama_KPA = $request->kpa;
-            $user->foto = $fileName;
+            $user->foto = 'default.jpg';
             $user->isAdmin = $request->level;
             $user->save();
 
-            return redirect()->route('user.index')->with('success', 'Data berhasil ditambah!');
+            toastr()->success('Berhasil menambah data OPD');
+            return redirect()->route('user.index');
         } catch (QueryException $th) {
-            return back()->with('tryError', $th->errorInfo);
+            toastr()->error($th->errorInfo);
+            return redirect()->back();
         }
     }
 
@@ -100,8 +104,7 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        return view('admin.user.index', [
-            'page' => 'edit',
+        return view('admin.user.useredit', [
             'data' => User::where('id', $id)->get()
         ]);
     }
@@ -134,9 +137,11 @@ class UserController extends Controller
             $user->isAdmin = $request->level;
             $user->save();
 
-            return redirect()->route('user.index')->with('success', 'Data berhasil ditambah!');
+            toastr()->success('Berhasil memperbarui data OPD!');
+            return redirect()->route('user.index');
         } catch (QueryException $th) {
-            return back()->with(['tryError', $th->errorInfo]);
+            toastr()->error($th->errorInfo);
+            return redirect()->back();
         }
     }
 
@@ -149,15 +154,32 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         try {
-            File::delete(public_path('storage/uploads/' . $user->foto));
-            User::destroy($user->id);
+            $activity = Activity::where('user_id', $user->id)->get();
+            foreach ($activity as $value) {
+                $schedule = Schedule::where('activity_id', $value->id)->get();
+                foreach ($schedule as $scID) {
+                    Location::where('schedule_id', $scID->id)->delete();
+                    PPTK::where('schedule_id', $scID->id)->delete();
+                    Volume::where('schedule_id', $scID->id)->delete();
+                }
+                Schedule::where('activity_id', $value->id)->delete();
+                Anggaran::where('activity_id', $value->id)->delete();
+            }
+            if ($user->foto != 'default.jpg') {
+                File::delete(public_path('storage/uploads/' . $user->foto));
+            }
             DB::table('targets')->where('user_id', $user->id)->delete();
             DB::table('t_keuangans')->where('user_id', $user->id)->delete();
             DB::table('reports')->where('user_id', $user->id)->delete();
-            $activity = Activity::where('user_id', $user->id)->get();
-            return response()->json(['success', 'Data berhasil dihapus']);
-        } catch (\Throwable $th) {
-            return response()->json(['tryError', $th->getMessage()]);
+            DB::table('user_p_p_t_k_s')->where('user_id', $user->id)->delete();
+            DB::table('activities')->where('user_id', $user->id)->delete();
+            User::destroy($user->id);
+
+            toastr()->success('Berhasil menghapus data OPD!');
+            return redirect()->back();
+        } catch (\Illuminate\Database\QueryException $th) {
+            toastr()->error($th->errorInfo);
+            return redirect()->back();
         }
     }
 }

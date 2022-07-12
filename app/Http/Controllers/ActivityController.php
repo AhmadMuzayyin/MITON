@@ -214,8 +214,8 @@ class ActivityController extends Controller
             DB::table('anggarans')->where('activity_id', $activity->id)->delete();
             Activity::destroy($activity->id);
             return response()->json(['success', 'Data berhasil dihapus']);
-        } catch (\Throwable $th) {
-            return response()->json(['tryError', $th->getMessage()]);
+        } catch (\Illuminate\Database\QueryException $th) {
+            return response()->json(['error', $th->errorInfo]);
         }
     }
     public function show()

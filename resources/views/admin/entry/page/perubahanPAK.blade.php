@@ -83,36 +83,25 @@
                 },
                 success: function(data) {
                     if ($.isEmptyObject(data.error)) {
-                        location.reload();
+                        toastr.options =
+                            {
+                                "progressBar" : true
+                            }
+                        toastr.success("Berhasil menambahkan data Perubahan Anggaran Kegiatan!", "Success");
+                        window.setTimeout(function() {
+                                window.location.href =
+                                    '{{ route("activity.index") }}'
+                            }, 3000);
                     } else {
-                        printErrorMsg(data.error);
+                        toastr.options =
+                            {
+                                "progressBar" : true
+                            }
+                            toastr.error(data.error, "Error");
                     }
                 }
             });
         })
-    });
-
-    $(document).ready(function() {
-        $(".deleteActivity").click(function(e) {
-            e.preventDefault();
-            var _token = $("input[name='_token']").val();
-            var Url = $(this).parents('form').attr('action');
-            $.ajax({
-                type: 'DELETE',
-                url: Url,
-                data: {
-                    _token: _token
-                },
-                success: function(data) {
-                    if ($.isEmptyObject(data.error)) {
-                        console.log(data.error);
-                        location.reload();
-                    } else {
-                        printErrorMsg(data.error);
-                    }
-                }
-            });
-        });
     });
 </script>
 <style>
