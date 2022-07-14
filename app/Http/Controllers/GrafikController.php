@@ -684,9 +684,10 @@ class GrafikController extends Controller
     {
         if (request()->all() == null) {
             // Realisasi Kegiatan no filter
+            $target = (Target::where('pak_id', session()->get('pak_id'))->sum('persentase') / 100);
             $rakg = [
-                'target' => Target::where('pak_id', session()->get('pak_id'))->sum('persentase'),
-                'opdmelapor' => Report::where('pak_id', session()->get('pak_id'))->where('status', 1)->sum('kegiatan_sekarang'),
+                'target' => $target,
+                'opdmelapor' => (Report::where('pak_id', session()->get('pak_id'))->where('status', 1)->sum('kegiatan_sekarang') / Target::where('pak_id', session()->get('pak_id'))->sum('persentase')) * 100 ?? 0,
                 'opd' => User::where('isAdmin', 0)->get()
             ];
 

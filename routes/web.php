@@ -72,9 +72,6 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/pak/kunci', [PakController::class, 'kunci'])->name('pak.unlock');
     Route::post('/dashbord', [PakController::class, 'redirect'])->name('p-to-d');
-    Route::get('/redirect', function () {
-        return redirect()->route('dashboard');
-    });
     Route::get('/report', [ReportController::class, 'index'])->name('report.index');
     Route::post('/report/store', [ReportController::class, 'store'])->name('report.store');
     Route::post('/getReport', [ReportController::class, 'getReport'])->name('getReport');

@@ -89,7 +89,7 @@
                                             <div class="inline">
                                                 <div class="realisasi" data-redraw="true" data-percent="{{ $raku['persentase'] }}">
                                                     <div class="persen">
-                                                        {{ $raku['persentase'] }}
+                                                        {{ $raku['persentase'] }}%
                                                     </div>
                                                 </div>
                                             </div>

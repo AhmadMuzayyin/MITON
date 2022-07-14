@@ -77,7 +77,7 @@ class PakController extends Controller
             'pak_id' => $request->pak_id,
             'kondisi' => $request->kondisi
         ]);
-        return redirect('/redirect');
+        return redirect()->route('dashboard');
     }
 
     /**
