@@ -53,36 +53,36 @@ class UserController extends Controller
     public function store(Request $request)
     {
         // dd($request->all());
-        $validator = Validator::make($request->all(), [
+        $request->validate([
             'kode' => 'required|unique:users,kode_SKPD',
-            'username' => 'required|unique:users,username',
+            'skpd' => 'required',
+            'nokantor' => 'required',
+            'alamatkantor' => 'required',
+            'namaoperator' => 'required',
+            'nooperator' => 'required',
+            'username' => 'required|unique:users,username|min:3',
+            'password' => 'required|min:5',
+            'kpa' => 'required',
+            'level' => 'required'
         ]);
-        if ($validator->fails()) {
-            toastr()->error($validator->errors());
-            return back();
-        }
-        try {
-            $user = new User;
 
-            $user->kode_SKPD = $request->kode;
-            $user->nama_SKPD = $request->skpd;
-            $user->nama_operator = $request->namaoperator;
-            $user->no_hp = $request->nooperator;
-            $user->no_kantor = $request->nokantor;
-            $user->alamat_kantor = $request->alamatkantor;
-            $user->username = $request->username;
-            $user->password = bcrypt($request->password);
-            $user->nama_KPA = $request->kpa;
-            $user->foto = 'default.jpg';
-            $user->isAdmin = $request->level;
-            $user->save();
+        $user = new User;
 
-            toastr()->success('Berhasil menambah data OPD');
-            return redirect()->route('user.index');
-        } catch (QueryException $th) {
-            toastr()->error($th->errorInfo);
-            return redirect()->back();
-        }
+        $user->kode_SKPD = $request->kode;
+        $user->nama_SKPD = $request->skpd;
+        $user->nama_operator = $request->namaoperator;
+        $user->no_hp = $request->nooperator;
+        $user->no_kantor = $request->nokantor;
+        $user->alamat_kantor = $request->alamatkantor;
+        $user->username = $request->username;
+        $user->password = bcrypt($request->password);
+        $user->nama_KPA = $request->kpa;
+        $user->foto = 'default.jpg';
+        $user->isAdmin = $request->level;
+        $user->save();
+
+        toastr()->success('Berhasil menambah data OPD');
+        return redirect()->route('user.index');
     }
 
     /**

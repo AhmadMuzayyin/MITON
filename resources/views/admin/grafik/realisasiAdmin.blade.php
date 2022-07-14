@@ -39,36 +39,64 @@
                                     </div>
                                 </div>
                             </form>
-
                             <div class="row mt-5">
                                 <div class="col-md">
                                     <p class="mx-2">Grafik Kegiatan</p>
-                                    <div class="row">
-                                        <div class="col-md">
-                                            <input type="text" name="kegiatan" id="kegiatan" class="kegiatan"
-                                                value="50" readonly>
-                                            <small>Target Kegiatan</small>
+                                    <div class="row-col">
+                                        <div class="row-cell">
+                                            <div class="inline">
+                                                <div class="target" data-redraw="true" id="PersenTK" data-percent="{{ $rakg['target'] }}">
+                                                    <div class="persen" id="targetKegiatan">
+                                                        {{ $rakg['target'] }}%
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="col-md">
-                                            <input type="text" name="kegiatan" id="kegiatan" class="kegiatan"
-                                                value="50" readonly>
-                                            <small>Realisasi Kegiatan</small>
+                                        <small>
+                                            <p>Target Kegiatan: {{ $rakg['target'] }}%</p>
+                                            <p>Semua OPD: {{ count($rakg['opd']) }}</p>
+                                        </small>
+                                        <div class="row-cell">
+                                            <div class="inline">
+                                                <div class="realisasi" data-redraw="true" data-percent="{{ $rakg['opdmelapor'] }}">
+                                                    <div class="persen">
+                                                        {{ $rakg['opdmelapor'] }}%
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
+                                        <small>
+                                            <p>Realisasi: {{ $rakg['opdmelapor'] }}%</p>
+                                        </small>
                                     </div>
                                 </div>
                                 <div class="col-md">
                                     <p class="mx-3">Grafik Keuangan</p>
-                                    <div class="row">
-                                        <div class="col-md">
-                                            <input type="text" name="keuangan" id="keuangan" class="keuangan"
-                                                value="50" readonly>
-                                            <small>Target Keuangan</small>
+                                    <div class="row-col">
+                                        <div class="row-cell">
+                                            <div class="inline">
+                                                <div class="target" data-redraw="true" data-percent="{{ $raku['persenTarget'] }}">
+                                                    <div class="persen">
+                                                        {{ $raku['persenTarget'] }}%
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="col-md">
-                                            <input type="text" name="keuangan" id="keuangan" class="keuangan"
-                                                value="50" readonly>
-                                            <small>Realisasi Keuangan</small>
+                                        <small>
+                                            <p>Anggaran: Rp.{{ \FormatUang::format($raku['target'], 2) }}</p>
+                                        </small>
+                                        <div class="row-cell">
+                                            <div class="inline">
+                                                <div class="realisasi" data-redraw="true" data-percent="{{ $raku['persentase'] }}">
+                                                    <div class="persen">
+                                                        {{ $raku['persentase'] }}
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
+                                        <small>
+                                            <p>Realisasi: Rp.{{ \FormatUang::format($raku['realanggaran']) }}</p>
+                                        </small>
                                     </div>
                                 </div>
                             </div>
@@ -83,33 +111,26 @@
 @endsection
 
 @push('script')
-    <script src="{{ url('assets/jquery-knob/jquery.knob.js') }}"></script>
-    <script src="{{ url('assets/jquery-knob/excanvas.js') }}"></script>
+    {{-- <script src="{{ url('assets/jquery-knob/jquery.knob.js') }}"></script>
+    <script src="{{ url('assets/jquery-knob/excanvas.js') }}"></script> --}}
+    <script src="{{ url('assets/libs/jquery/jquery.easy-pie-chart/dist/jquery.easypiechart.fill.js') }}"></script>
     <script>
         $(document).ready(function() {
-            $.ajax({
-                type: "GET",
-                url: "{{ url('realFisik') }}",
-                success: function(res) {
-                    $(function() {
-                        $(".kegiatan").knob({
-                            'width': 100,
-                            'height': 100
-                        });
-                    });
-                }
+            $(".target").easyPieChart({
+                lineWidth: 5,
+                trackColor: 'transparent',
+                barColor: '#fcc100',
+                scaleColor: 'transparent',
+                size: 100,
+                scaleLength: 0
             });
-        });
-        $(document).ready(function() {
-            $.ajax({
-                type: "GET",
-                url: "{{ url('realFisik') }}",
-                success: function(res) {
-                    $(".keuangan").knob({
-                        'width': 100,
-                        'height': 100
-                    });
-                }
+            $(".realisasi").easyPieChart({
+                lineWidth: 5,
+                trackColor: 'transparent',
+                barColor: '#FA5661',
+                scaleColor: 'transparent',
+                size: 100,
+                scaleLength: 0
             });
         });
         $(document).ready(function() {
@@ -131,7 +152,11 @@
                             window.location.href = '{{ route('realisasi') }}?dana=' +
                                 data.dana + '&bulan=' + data.bulan;
                         } else {
-                            printErrorMsg(data.error);
+                            toastr.options =
+                            {
+                                "progressBar" : true
+                            }
+                            toastr.error(data.error, "Error");
                         }
                     }
                 });
@@ -157,7 +182,11 @@
                             window.location.href = '{{ route('realisasi') }}?dana=' +
                                 data.dana + '&bulan=' + data.bulan;
                         } else {
-                            printErrorMsg(data.error);
+                            toastr.options =
+                            {
+                                "progressBar" : true
+                            }
+                            toastr.error(data.error, "Error");
                         }
                     }
                 });
@@ -176,6 +205,9 @@
         input[type=number] {
             -moz-appearance: textfield;
         }
-
+        .persen{
+            position: fixed;
+            margin: 2.7%
+        }
     </style>
 @endpush

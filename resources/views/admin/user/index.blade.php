@@ -43,7 +43,7 @@
                                             <form action="{{ route('user.destroy', $s->id) }}" class="d-inline-block" method="POST">
                                                 @method('delete')
                                                 @csrf
-                                                <button type="submit" class="md-btn md-raised m-b-sm red deleteUser" role="button" style="border: 0px">
+                                                <button type="submit" class="md-btn md-raised m-b-sm red deleteUser" role="button" style="border: 0px" {{ $s->isAdmin == 1 ? 'disabled' : '' }}>
                                                     <i class="bi bi-trash-fill"></i>
                                                 </button>
                                             </form>

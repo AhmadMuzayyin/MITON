@@ -16,13 +16,13 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('kode_SKPD')->uniqid();
+            $table->string('kode_SKPD');
             $table->string('nama_SKPD');
             $table->string('nama_operator');
             $table->string('no_hp');
             $table->string('no_kantor');
             $table->string('alamat_kantor');
-            $table->string('username')->uniqid();
+            $table->string('username');
             $table->string('password');
             $table->string('nama_KPA');
             $table->string('foto')->nullable();

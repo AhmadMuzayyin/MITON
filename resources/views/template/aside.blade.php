@@ -194,7 +194,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a onclick="window.location.href = '#'">
+                                <a onclick="window.location.href = '{{ route('backup.index') }}'">
                                     <span class="nav-text">BACKUP DATA</span>
                                 </a>
                             </li>

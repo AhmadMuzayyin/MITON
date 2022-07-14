@@ -13,6 +13,7 @@ use App\Http\Controllers\TargetController;
 use App\Http\Controllers\VolumeController;
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\AnggaranController;
+use App\Http\Controllers\BackupController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\SchuduleController;
 use App\Http\Controllers\UserPPTKController;
@@ -20,6 +21,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\InputActivationController;
 use App\Http\Controllers\PenggunaAnggaranController;
 use App\Models\UserPPTK;
+use Illuminate\Support\Facades\Artisan;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,7 +36,11 @@ use App\Models\UserPPTK;
 
 Route::get('/', [Login::class, 'index'])->name('login');
 Route::post('/auth', [Login::class, 'auth'])->name('auth');
-
+Route::get('/route', function () {
+    Artisan::call('route:clear');
+    Artisan::call('route:cache');
+    return redirect()->back();
+});
 Route::middleware(['auth'])->group(function () {
     Route::post('/logout', [Login::class, 'logout'])->name('logout');
     Route::get('/pak/anggaran', [PakController::class, 'pak'])->name('PAK');
@@ -117,13 +123,14 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/activation/update', [InputActivationController::class, 'ganti'])->name('activation.ganti');
     Route::get('/users/export', [UserController::class, 'export'])->name('user.export');
     Route::get('/activity/export', [ActivityController::class, 'export'])->name('Activity.export');
-    Route::get('/test', function () {
-        $filename = "backup-" . Carbon::now()->format('Y-m-d') . ".gz";
-
-        $command = "mysqldump --user=" . env('DB_USERNAME') . " --password=" . env('DB_PASSWORD') . " --host=" . env('DB_HOST') . " " . env('DB_DATABASE') . "  | gzip > " . public_path() . "/app/backup/" . $filename;
-        return view('admin.index');
-    });
-
     Route::get('/profil/{id}', [DashboardController::class, 'profil']);
     Route::post('/profil/update/{id}', [DashboardController::class, 'updateProfil']);
+    Route::get('/backup', [BackupController::class, 'index'])->name('backup.index')->middleware('admin');
+    Route::post('/backup/download', [BackupController::class, 'download']);
+
+    Route::get('/route', function () {
+        Artisan::call('route:clear');
+        Artisan::call('route:cache');
+        return redirect()->back();
+    });
 });

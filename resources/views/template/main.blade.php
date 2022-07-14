@@ -29,6 +29,7 @@
     {{-- DataTable --}}
     <link rel="stylesheet" href="{{ url('assets/DataTable/Table/css/dataTables.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ url('assets/libs/jquery/eonasdan-bootstrap-datetimepicker/yearpicker.css') }}">
+    <link rel="stylesheet" href="{{ url('assets/libs/jquery/parsleyjs/dist/parsley.css') }}">
     <!-- build:css ../assets/styles/app.min.css -->
     <link rel="stylesheet" href="{{ url('assets/styles/app.css') }}" type="text/css" />
     <!-- endbuild -->
