@@ -89,26 +89,26 @@
                                 <div class="col">
                                     <div class="form-group">
                                         <div class="form-check">
-                                            <input class="form-check-input laporancheck" type="checkbox" id="laporan1"
+                                            <input class="form-check-input laporancheck" type="checkbox" id="dau"
                                                 name="laporan[]" value="dau"
                                                 {{ $data->dau == '1' ? 'checked' : '' }}>
-                                            <label class="form-check-label" for="laporan1">
+                                            <label class="form-check-label" for="dau">
                                                 DAU
                                             </label>
                                         </div>
                                         <div class="form-check">
-                                            <input class="form-check-input laporancheck" type="checkbox" id="laporan1"
+                                            <input class="form-check-input laporancheck" type="checkbox" id="dak"
                                                 name="laporan[]" value="dak"
                                                 {{ $data->dak == '1' ? 'checked' : '' }}>
-                                            <label class="form-check-label" for="laporan1">
+                                            <label class="form-check-label" for="dak">
                                                 DAK
                                             </label>
                                         </div>
                                         <div class="form-check">
-                                            <input class="form-check-input laporancheck" type="checkbox" id="laporan2"
+                                            <input class="form-check-input laporancheck" type="checkbox" id="dbhc"
                                                 name="laporan[]" value="dbhc"
                                                 {{ $data->dbhc == '1' ? 'checked' : '' }}>
-                                            <label class="form-check-label" for="laporan2">
+                                            <label class="form-check-label" for="dbhc">
                                                 DBHC
                                             </label>
                                         </div>
@@ -124,16 +124,16 @@
                                 <div class="col">
                                     <div class="form-group">
                                         <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="program" id="gridRadios1"
+                                            <input class="form-check-input" type="radio" name="program" id="ya"
                                                 value="Ya" {{ $data->program == 'Ya' ? 'checked' : '' }}>
-                                            <label class="form-check-label" for="gridRadios1">
+                                            <label class="form-check-label" for="ya">
                                                 Ya
                                             </label>
                                         </div>
                                         <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="program" id="gridRadios1"
+                                            <input class="form-check-input" type="radio" name="program" id="tidak"
                                                 value="Tidak" {{ $data->program == 'Tidak' ? 'checked' : '' }}>
-                                            <label class="form-check-label" for="gridRadios1">
+                                            <label class="form-check-label" for="tidak">
                                                 Tidak
                                             </label>
                                         </div>

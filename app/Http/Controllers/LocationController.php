@@ -9,32 +9,6 @@ use Illuminate\Database\QueryException;
 
 class LocationController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         try {
@@ -47,6 +21,7 @@ class LocationController extends Controller
 
                 $l = new Location;
                 $l->schedule_id = $request->id;
+                $l->activity_id = $request->activity_id;
                 $l->lokasi = $request->lokasi;
                 $l->latitude = $request->latt;
                 $l->longitude = $request->long;
@@ -54,6 +29,7 @@ class LocationController extends Controller
             } else {
                 $l = new Location;
                 $l->schedule_id = $request->id;
+                $l->activity_id = $request->activity_id;
                 $l->lokasi = $request->lokasi;
                 $l->latitude = $request->latt;
                 $l->longitude = $request->long;
@@ -74,47 +50,6 @@ class LocationController extends Controller
             return redirect()->back();
         }
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Location  $location
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Location $location)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Location  $location
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Location $location)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Location  $location
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Location $location)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Location  $location
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Location $location)
     {
         try {

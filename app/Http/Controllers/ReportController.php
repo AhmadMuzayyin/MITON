@@ -112,36 +112,37 @@ class ReportController extends Controller
                     return redirect()->route('report.index');
                 } else {
                     $r = Report::find($value);
-                    if ($request->keuangan[$key] > $r->t_keuangan->anggaran) {
-                        toastr()->error('Realisasi keuangan tidak boleh lebih besar dari anggaran yang telah ditentukan!');
-                        return redirect()->route('report.index');
+                    // if ($request->keuangan[$key] > $r->t_keuangan->anggaran) {
+                    //     toastr()->error('Realisasi keuangan tidak boleh lebih besar dari anggaran yang telah ditentukan!');
+                    //     return redirect()->route('report.index');
+                    // } else {
+                    // $id = Report::firstWhere('id', $value);
+                    // $max = Activity::firstWhere('id', $id->activity_id);
+                    // if ($request->kegiatan[$key] > $r->target->persentase) {
+                    //     toastr()->error('Realisasi keggiatan tidak boleh lebih besar dari target yang telah ditentukan!');
+                    //     return redirect()->route('report.index');
+                    // } else {
+                    if ($r->month_id > 1) {
+                        $id = $r->id - 1;
+                        $r = Report::find($id);
+                        $data = Report::find($value);
+                        $data->keuangan_lalu = $r->keuangan_sekarang;
+                        $data->kegiatan_lalu = $r->kegiatan_sekarang;
+                        $data->keuangan_sekarang = $request->keuangan[$key];
+                        $data->kegiatan_sekarang = $request->kegiatan[$key];
+                        $data->kendala = $request->kendala[$key];
+                        $data->status = 1;
+                        $data->save();
                     } else {
-                        $id = Report::firstWhere('id', $value);
-                        $max = Activity::firstWhere('id', $id->activity_id);
-                        if ($request->kegiatan[$key] > $r->target->persentase) {
-                            toastr()->error('Realisasi keggiatan tidak boleh lebih besar dari target yang telah ditentukan!');
-                            return redirect()->route('report.index');
-                        } else {
-                            if ($r->month_id > 1) {
-                                $id = $r->id - 1;
-                                $r = Report::find($id);
-                                $data = Report::find($value);
-                                $data->keuangan_lalu = $r->keuangan_sekarang;
-                                $data->kegiatan_lalu = $r->kegiatan_sekarang;
-                                $data->keuangan_sekarang = $request->keuangan[$key];
-                                $data->kegiatan_sekarang = $request->kegiatan[$key];
-                                $data->kendala = $request->kendala[$key];
-                                $data->status = 1;
-                                $data->save();
-                            }
-                            $data = Report::find($value);
-                            $data->keuangan_sekarang = $request->keuangan[$key];
-                            $data->kegiatan_sekarang = $request->kegiatan[$key];
-                            $data->kendala = $request->kendala[$key];
-                            $data->status = 1;
-                            $data->save();
-                        }
+                        $data = Report::find($value);
+                        $data->keuangan_sekarang = $request->keuangan[$key];
+                        $data->kegiatan_sekarang = $request->kegiatan[$key];
+                        $data->kendala = $request->kendala[$key];
+                        $data->status = 1;
+                        $data->save();
                     }
+                    // }
+                    // }
                 }
             };
             toastr()->success('Berhasil melakukan Report!');

@@ -49,7 +49,7 @@
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $k->rek }}</td>
-                                        <td>{{ $k->kegiatan }}</td>
+                                        <td>{{ $k->nama }}</td>
                                         <td id="tdanggara">{{ \FormatUang::format($k->anggaran) }}
                                         </td>
                                         <td>{{ $k->sumber_dana->nama }}</td>

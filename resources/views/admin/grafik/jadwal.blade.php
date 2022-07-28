@@ -24,7 +24,6 @@
         .header {
             text-align: center;
         }
-
     </style>
 </head>
 
@@ -65,7 +64,12 @@
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $item->nama }}</td>
                             <td>{{ \FormatUang::format(\FormatUang::getanggaran($item->anggaran)) }}</td>
-                            <td>{{ \FormatUang::getlokasi($item->id) }}</td>
+                            <td>
+                                <?php $lokasi = \FormatUang::getlokasi($item->id); $nmb=1;?>
+                                @foreach ($lokasi as $lok)
+                                    {{ $numb++ }}. {{ $lok->lokasi }} <br>
+                                @endforeach
+                            </td>
                             <td>{{ \FormatUang::getpptk($item->id) }}</td>
                             @foreach (\FormatUang::jdwlTarget($item->id) as $key => $item)
                                 <td>{{ $item->persentase }}</td>
@@ -131,7 +135,12 @@
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $item->nama }}</td>
                         <td>{{ \FormatUang::format(\FormatUang::getanggaran($item->anggaran)) }}</td>
-                        <td>{{ \FormatUang::getlokasi($item->id) }}</td>
+                        <td>
+                            <?php $lokasi = \FormatUang::getlokasi($item->id); $numb=1;?>
+                            @foreach ($lokasi as $lok)
+                               {{ $numb++ }}. {{ $lok->lokasi }} <br>
+                            @endforeach
+                        </td>
                         <td>{{ \FormatUang::getpptk($item->id) }}</td>
                         @foreach (\FormatUang::jdwlTarget($item->id) as $key => $item)
                             <td>{{ $item->persentase }}</td>

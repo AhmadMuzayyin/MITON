@@ -38,25 +38,26 @@ class DashboardController extends Controller
         'jml_png_pake' => $jml_png_pake ?? 0,
         'jml_sub_lapor' => $report->count() ?? $jml_sub_lapor
       ]);
+    } else {
+      $data = Activity::where('user_id', Auth()->user()->id)->where('pak_id', session()->get('pak_id'))->get();
+      $jml_sub = Activity::where('user_id', Auth()->user()->id)->where('pak_id', session()->get('pak_id'))->get()->count();
+      $jml_dana = SumberDana::all();
+      $jml_pengadaan = Pengadaan::all();
+      $report = Report::where('user_id', Auth()->user()->id)->where('pak_id', session()->get('pak_id'))->where('month_id', now()->format('n'))->where('status', 1)->get();
+      $jml_sub_lapor = 0;
+      foreach ($data as $value) {
+        $jml_dana_pake = $value->distinct()->count('sumber_dana_id');
+        $jml_png_pake = $value->distinct()->count('pengadaan_id');
+      }
+      return view('admin.index', [
+        'jml_sub' => $jml_sub,
+        'jml_dana' => $jml_dana->count(),
+        'jml_dana_pake' => $jml_dana_pake ?? 0,
+        'jml_pengadaan' => $jml_pengadaan->count(),
+        'jml_png_pake' => $jml_png_pake ?? 0,
+        'jml_sub_lapor' => $report->count() ?? $jml_sub_lapor
+      ]);
     }
-    $data = Activity::where('user_id', Auth()->user()->id)->where('pak_id', session()->get('pak_id'))->get();
-    $jml_sub = Activity::where('user_id', Auth()->user()->id)->where('pak_id', session()->get('pak_id'))->get()->count();
-    $jml_dana = SumberDana::all();
-    $jml_pengadaan = Pengadaan::all();
-    $report = Report::where('user_id', Auth()->user()->id)->where('pak_id', session()->get('pak_id'))->where('month_id', now()->format('n'))->where('status', 1)->get();
-    $jml_sub_lapor = 0;
-    foreach ($data as $key => $value) {
-      $jml_dana_pake = $value->distinct()->count('sumber_dana_id');
-      $jml_png_pake = $value->distinct()->count('pengadaan_id');
-    }
-    return view('admin.index', [
-      'jml_sub' => $jml_sub,
-      'jml_dana' => $jml_dana->count(),
-      'jml_dana_pake' => $jml_dana_pake ?? 0,
-      'jml_pengadaan' => $jml_pengadaan->count(),
-      'jml_png_pake' => $jml_png_pake ?? 0,
-      'jml_sub_lapor' => $report->count() ?? $jml_sub_lapor
-    ]);
   }
 
   public function indexData()

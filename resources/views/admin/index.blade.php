@@ -7,7 +7,7 @@
     <div class="p-a white lt box-shadow">
         <div class="row">
             <div class="col-sm-6">
-                <h4 class="mb-0 _300">WELCOME TO MITON</h4>
+                <h4 class="mb-0 _300">WELCOME TO RAFIKA</h4>
                 <small class="text-muted">APLIKASI REALISASI FISIK DAN KEUANGAN</small>
             </div>
         </div>

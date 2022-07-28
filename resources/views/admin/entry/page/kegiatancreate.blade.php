@@ -76,20 +76,20 @@
                                 <div class="col">
                                     <div class="form-group">
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="gridCheck" name="laporan[]" value="dau">
-                                            <label class="form-check-label" for="gridCheck">
+                                            <input class="form-check-input" type="checkbox" id="dau" name="laporan[]" value="dau">
+                                            <label class="form-check-label" for="dau">
                                                 DAU
                                             </label>
                                         </div>
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="gridCheck" name="laporan[]" value="dak">
-                                            <label class="form-check-label" for="gridCheck">
+                                            <input class="form-check-input" type="checkbox" id="dak" name="laporan[]" value="dak">
+                                            <label class="form-check-label" for="dak">
                                                 DAK
                                             </label>
                                         </div>
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="gridCheck" name="laporan[]" value="dbhc">
-                                            <label class="form-check-label" for="gridCheck">
+                                            <input class="form-check-input" type="checkbox" id="dbhc" name="laporan[]" value="dbhc">
+                                            <label class="form-check-label" for="dbhc">
                                                 DBHC
                                             </label>
                                         </div>

@@ -28,7 +28,15 @@
                                                     <td>{{ $loop->iteration }}</td>
                                                     <td>{{ strtoupper(\FormatUang::getbulan($key)) }}</td>
                                                     <td>{{ \FormatUang::getupdate($value) }}</td>
-                                                    <td><button class="btn btn-fw btn-sm primary">MELAPOR</button></td>
+                                                    <td>
+                                                        @foreach ($value as $status)
+                                                            @if ($status->status == 1)
+                                                            <button class="btn btn-fw btn-sm primary">MELAPOR</button>
+                                                            @else
+                                                            <button class="btn btn-fw btn-sm danger">TIDAK MELAPOR</button>
+                                                            @endif
+                                                        @endforeach
+                                                    </td>
                                                 </tr>
                                             @endforeach
                                         @endif

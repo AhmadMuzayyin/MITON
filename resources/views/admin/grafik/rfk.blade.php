@@ -77,7 +77,11 @@
                         </td>
                         <td class="text-center" style="font-size: 90%">{{ strtoupper(1 . ' PAKET') }}</td>
                         <td class="text-center" style="font-size: 90%" style="font-size: 80%">
-                            {{ \FormatUang::getLocation($item['lokasi']) }}</td>
+                            <?php $lokasi = \FormatUang::getlokasi($item['lokasi']); $numb = 1;?>
+                            @foreach ($lokasi as $lok)
+                                {{ $numb++ }}. {{ $lok->lokasi }} <br>
+                            @endforeach
+                        </td>
                         <td class="text-center" style="font-size: 90%">
                             {{ \FormatUang::getpptk($item['sub']->id) }}</td>
                         <td class="text-center" style="font-size: 90%">{{ $item['sub']->pengadaan->nama }}</td>

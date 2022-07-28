@@ -51,6 +51,7 @@
             <form>
                 @csrf
                 <input type="hidden" name="id" value="{{ $data->id }}">
+                <input type="hidden" name="activity_id" value="{{ $data->id }}">
                 <div class="modal-body">
                     <label for="lokasi">PILIH LOKASI</label>
                     <input type="text" class="form-control" id="lokasi" name="lokasi">
@@ -89,6 +90,7 @@
                     var _token = $("input[name='_token']").val();
                     var id = $("input[name='id']").val();
                     var lokasi = $("input[name='lokasi']").val();
+                    var activity_id = $("input[name='activity_id']").val();
                     $.ajax({
                         type: 'POST',
                         url: '{{ route('location.store') }}',
@@ -97,7 +99,8 @@
                             id: id,
                             lokasi: lokasi,
                             latt: latt,
-                            long: long
+                            long: long,
+                            activity_id: activity_id
                         },
                         success: function(data) {
                             if ($.isEmptyObject(data.error)) {

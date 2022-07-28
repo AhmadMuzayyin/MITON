@@ -28,7 +28,7 @@ class GrafikController extends Controller
     public function rekap()
     {
         if (Auth()->user()->isAdmin != 1) {
-            $report = Report::join('targets', 'reports.target_id', '=', 'targets.id')->join('t_keuangans', 'reports.t_keuangan_id', '=', 't_keuangans.id')->join('users', 'reports.user_id', '=', 'users.id')->join('activities', 'reports.activity_id', '=', 'activities.id')->where('reports.user_id', Auth()->user()->id)->where('reports.status', 1)->where('reports.pak_id', session()->get('pak_id'))->get();
+            $report = Report::join('targets', 'reports.target_id', '=', 'targets.id')->join('t_keuangans', 'reports.t_keuangan_id', '=', 't_keuangans.id')->join('users', 'reports.user_id', '=', 'users.id')->join('activities', 'reports.activity_id', '=', 'activities.id')->where('reports.user_id', Auth()->user()->id)->where('reports.pak_id', session()->get('pak_id'))->get();
             $data = $report->groupBy('month_id')->map(function ($row) {
                 return [
                     'tKegiatan' => $row->sum('persentase'),
@@ -38,6 +38,7 @@ class GrafikController extends Controller
                     'OldrKeuangan' => $row->sum('keuangan_lalu'),
                     'rKeuangan' => $row->sum('keuangan_sekarang'),
                     'opd' => $row[0]->nama_SKPD,
+                    'cek' => $row
                 ];
             });
             $paket = Activity::where('user_id', Auth()->user()->id)->where('pak_id', session()->get('pak_id'))->get()->count();
@@ -442,7 +443,6 @@ class GrafikController extends Controller
             $rp = Report::where('activity_id', $v->id)->where('month_id', $request->bulan)->where('status', 1)->where('user_id', Auth()->user()->id)->where('pak_id', session()->get('pak_id'))->first();
             $schedul = Schedule::where('activity_id', $v->id)->get();
             foreach ($schedul as $val) {
-                $lokasi = $val->location;
                 $scid = $val->id;
                 $ta = Target::where('schedule_id', $scid)->where('month_id', $request->bulan)->get();
                 $target = $ta->sum('persentase');
@@ -451,7 +451,7 @@ class GrafikController extends Controller
             // dd($tku);
             $hasil[] = [
                 'sub' => $sub,
-                'lokasi' => $lokasi,
+                'lokasi' => $scid,
                 'total' => $total,
                 'target' => $target,
                 'tku' => ($tku->anggaran / $total) * 100,
@@ -473,7 +473,7 @@ class GrafikController extends Controller
             'data' => $hasil,
             'bulan' => $bulan,
             'total' => $total,
-            'sisa' => $sisa
+            'sisa' => $sisa,
         ]);
     }
 
@@ -669,12 +669,12 @@ class GrafikController extends Controller
     public function laporan()
     {
         if (Auth()->user()->isAdmin != 1) {
-            $data = Report::where('status', 1)->where('user_id', Auth()->user()->id)->where('pak_id', session()->get('pak_id'))->get()->groupBy('month_id');
+            $data = Report::where('user_id', Auth()->user()->id)->where('pak_id', session()->get('pak_id'))->get()->groupBy('month_id');
             return view('admin.grafik.laporan', [
                 'data' => $data ? $data : ''
             ]);
         }
-        $data = Report::where('status', 1)->where('pak_id', session()->get('pak_id'))->get()->groupBy('month_id');
+        $data = Report::where('pak_id', session()->get('pak_id'))->get()->groupBy('month_id');
         return view('admin.grafik.laporan', [
             'data' => $data ? $data : ''
         ]);

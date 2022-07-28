@@ -65,11 +65,7 @@
                                             <tr>
                                                 <th class="tg-0pky">TARGET</th>
                                                 <th class="tg-0pky">REALISASI</th>
-                                                @if (session()->get('kondisi') == 0)
-                                                    <th class="tg-0pky">TARGET</th>
-                                                @else
-                                                    <th class="tg-0pky">SISA</th>
-                                                @endif
+                                                <th class="tg-0pky">SISA</th>
                                                 <th class="tg-0pky">REALISASI</th>
                                             </tr>
                                         </thead>
@@ -90,15 +86,9 @@
                                                             style="max-width: 25px;"
                                                             value="{{ $item->kegiatan_sekarang ? $item->kegiatan_sekarang : '' }}">
                                                     </td>
-                                                    @if (session()->get('kondisi') == 0)
-                                                        <td id="anggaran">
-                                                            {{ \FormatUang::format($item->t_keuangan->anggaran) }}
-                                                        </td>
-                                                    @else
-                                                        <td id="anggaran">
-                                                            {{ \FormatUang::format($anggaran) }}
-                                                        </td>
-                                                    @endif
+                                                    <td id="anggaran">
+                                                        {{ \FormatUang::format($item->t_keuangan->anggaran) }}
+                                                    </td>
                                                     <td id="keuangan" class="text-center">
                                                         <input type="number" name="keuangan[]" id="keuangan"
                                                             style="max-width: 80px;"
@@ -119,7 +109,8 @@
                                                 @if ($item->status == '1')
                                                     <button type="submit"
                                                         class="md-btn md-raised m-b-sm w-xs blue StoreReport"
-                                                        role="button">SIMPAN</button>
+                                                        role="button">SIMPAN
+                                                    </button>
                                                 @else
                                                     <div class=" alert alert-danger" role="alert">
                                                         Inputan dinonaktifkan, silahkan hubungi admin!
@@ -208,6 +199,5 @@
         input[type=number] {
             -moz-appearance: textfield;
         }
-
     </style>
 @endpush
