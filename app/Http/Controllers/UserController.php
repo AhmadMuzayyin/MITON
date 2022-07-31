@@ -54,7 +54,6 @@ class UserController extends Controller
     {
         // dd($request->all());
         $request->validate([
-            'kode' => 'required|unique:users,kode_SKPD',
             'skpd' => 'required',
             'nokantor' => 'required',
             'alamatkantor' => 'required',

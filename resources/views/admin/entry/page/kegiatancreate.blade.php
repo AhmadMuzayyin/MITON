@@ -139,7 +139,6 @@
                 subkegiatan: "required",
                 anggaran: {
                     required: true,
-                    minlength: 7
                 },
                 kegiatan: "required",
                 rek: {
@@ -154,9 +153,6 @@
             messages: {
                 rek: {
                     minlength: "NOMOR REKENIK minimal 5 digit!"
-                },
-                anggaran: {
-                    minlength: "Minimal anggaran 1.000.000!"
                 },
                 "laporan[]": "Harap pilih min 1 laporan!"
             },

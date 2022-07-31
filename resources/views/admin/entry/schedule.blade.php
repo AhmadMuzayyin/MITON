@@ -30,7 +30,7 @@
                                                 <tr>
                                                     <td>{{ $loop->iteration }}</td>
                                                     <td>{{ $s->rek }}</td>
-                                                    <td>{{ $s->kegiatan }}</td>
+                                                    <td>{{ $s->nama }}</td>
                                                     <td>
                                                         <div class="progress">
                                                             <div class="progress-bar progress-bar-striped progress-bar-animated"

@@ -30,12 +30,12 @@
                                                     <td>{{ \FormatUang::getupdate($value) }}</td>
                                                     <td>
                                                         @foreach ($value as $status)
-                                                            @if ($status->status == 1)
-                                                            <button class="btn btn-fw btn-sm primary">MELAPOR</button>
-                                                            @else
-                                                            <button class="btn btn-fw btn-sm danger">TIDAK MELAPOR</button>
-                                                            @endif
                                                         @endforeach
+                                                        @if ($status->status == 1)
+                                                        <button class="btn btn-fw btn-sm primary">MELAPOR</button>
+                                                        @else
+                                                        <button class="btn btn-fw btn-sm danger">TIDAK MELAPOR</button>
+                                                        @endif
                                                     </td>
                                                 </tr>
                                             @endforeach

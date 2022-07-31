@@ -26,10 +26,7 @@ class ReportController extends Controller
                 $now = date('n');
                 $aktif = InputActivation::select('id', 'nama', 'status')->get()->groupBy('nama');
                 $data = Report::where('sumber_dana_id', 1)->where('pak_id', session()->get('pak_id'))->where('month_id', $now)->where('user_id', Auth()->user()->id)->get();
-                $realisasi = Report::where('sumber_dana_id', 1)->where('pak_id', session()->get('pak_id'))->where('status', 1)->where('user_id', Auth()->user()->id)->get()->sum('keuangan_sekarang');
-                foreach ($data as $value) {
-                    $anggaran = Anggaran::where('activity_id', $value->activity_id)->where('kondisi', session()->get('kondisi'))->first();
-                }
+                // dd($data->sum());
                 return view('admin.report.index', [
                     'data' => $data,
                     'dana' => $dana,
@@ -37,7 +34,6 @@ class ReportController extends Controller
                     'batas' => $now,
                     'selected' => $selected,
                     'aktif' => $aktif['Laporan RFK'],
-                    'anggaran' => isset($anggaran) ? $anggaran->anggaran - $realisasi : 0,
                 ]);
             } else {
                 $dana = request()->get('dana');
@@ -47,10 +43,6 @@ class ReportController extends Controller
                 $now = date('n');
                 $aktif = InputActivation::select('id', 'nama', 'status')->get()->groupBy('nama');
                 $data = Report::where('sumber_dana_id', $dana)->where('pak_id', session()->get('pak_id'))->where('month_id', $idbulan)->where('user_id', Auth()->user()->id)->get();
-                $realisasi = Report::where('sumber_dana_id', $dana)->where('pak_id', session()->get('pak_id'))->where('status', 1)->where('user_id', Auth()->user()->id)->get()->sum('keuangan_sekarang');
-                foreach ($data as $value) {
-                    $anggaran = Anggaran::where('activity_id', $value->activity_id)->where('kondisi', session()->get('kondisi'))->first();
-                }
                 return view('admin.report.index', [
                     'data' => $data,
                     'dana' => $dana,
@@ -58,7 +50,6 @@ class ReportController extends Controller
                     'batas' => $now,
                     'selected' => $selected,
                     'aktif' => $aktif['Laporan RFK'],
-                    'anggaran' => isset($anggaran) ? $anggaran->anggaran - $realisasi : 0
                 ]);
             }
         }

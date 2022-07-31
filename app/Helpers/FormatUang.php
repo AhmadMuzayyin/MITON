@@ -12,7 +12,13 @@ use Illuminate\Support\Facades\Auth;
 
 class FormatUang
 {
-
+  public static function sisa($value, $dana)
+  {
+    $anggaran = Anggaran::where('activity_id', $value)->where('pak_id', session()->get('pak_id'))->sum('anggaran');
+    $report = Report::where('activity_id', $value)->where('sumber_dana_id', $dana)->where('pak_id', session()->get('pak_id'))->where('status', 1)->where('user_id', Auth()->user()->id)->get()->sum('keuangan_sekarang');
+    $value = $anggaran - $report;
+    return number_format($value, 0, ',', '.');
+  }
   public static function format($expression)
   {
     return number_format($expression, 0, ',', '.');

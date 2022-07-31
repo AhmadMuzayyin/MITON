@@ -17,7 +17,7 @@
                             <form action="{{ route('user.store') }}" method="POST">
                                 @csrf
                                 <div class="row mb-3">
-                                    <div class="col-md col-sm col-lg">
+                                    {{-- <div class="col-md col-sm col-lg">
                                         <label for="kode">KODE SKPD</label>
                                         <input type="text" class="form-control @error('kode') parsley-error @enderror"
                                             id="kode" name="kode" value="{{ old('kode') }}"
@@ -25,6 +25,22 @@
                                         @error('kode')
                                             <ul class="parsley-errors-list filled" id="parsley-id-4">
                                                 <li class="parsley-required"> {{ $message }}</li>
+                                            </ul>
+                                        @enderror
+                                    </div> --}}
+                                    <div class="col-md col-sm col-lg">
+                                        <label for="kode">KODE SKPD</label>
+                                        <select class="form-control @error('kode') parsley-error @enderror" id="kode" name="kode">
+                                            <option value="">Pilih Kode SKPD</option>
+                                            <option value="1.1.1">Sekretariat Daerah</option>
+                                            <option value="2.1.1">Dinas</option>
+                                            <option value="3.1.1">Badan</option>
+                                            <option value="4.1.1">Kantor</option>
+                                            <option value="5.1.1">Kecamatan</option>
+                                        </select>
+                                        @error('kode')
+                                            <ul class="parsley-errors-list filled" id="parsley-id-4">
+                                                <li class="parsley-required">{{ $message }}</li>
                                             </ul>
                                         @enderror
                                     </div>

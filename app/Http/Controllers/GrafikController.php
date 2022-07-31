@@ -73,47 +73,138 @@ class GrafikController extends Controller
                 ->join('activities', 'reports.activity_id', '=', 'activities.id')
                 ->join('targets', 'reports.target_id', '=', 'targets.id')
                 ->join('t_keuangans', 'reports.t_keuangan_id', '=', 't_keuangans.id')
+                ->join('anggarans', 'reports.activity_id', '=', 'anggarans.activity_id')
                 ->where('t_keuangans.pak_id', session()->get('pak_id'))
-                ->where('status', 1)
                 ->where('reports.pak_id', session()->get('pak_id'))
                 ->where('reports.month_id', now()->format('n'))
                 ->where('reports.sumber_dana_id', 1)
                 ->where('users.isAdmin', 0)
                 ->get();
             // dd($report);
+            $anggaran = 0;
+            $paket = 0;
+            $targetfisik = 0;
+            $realisasifisik = 0;
+            $targetkeuangan = 0;
+            $realisasikeuangan = 0;
+            foreach ($report as $key => $value) {
+                $anggaran += $value->anggaran;
+                $paket += $value->user->activity->count();
+                $targetfisik += $value->target->persentase;
+                $realisasifisik += $value->kegiatan_sekarang;
+                $targetkeuangan += $value->t_keuangan->anggaran;
+                $realisasikeuangan += $value->keuangan_sekarang;
+            }
+            $rekap = [
+                'anggaran' => $anggaran,
+                'paket' => $paket,
+                'tgf' => $targetfisik,
+                'rgf' => $realisasifisik,
+                'tgu' => $targetkeuangan,
+                'rgu' => $realisasikeuangan
+            ];
+            // dd($rekap);
             $bulan = Month::all();
             return view('admin.grafik.rakapAdmin', [
                 'data' => $report ?? [],
                 'bulan' => $bulan,
-                'skpd' => User::where('isAdmin', 0)->get(),
                 'selected' => now()->format('n'),
                 'dana' => SumberDana::all(),
-                'selectedDana' => 1
+                'selectedDana' => 1,
+                'rekap' => $rekap
             ]);
+        } else {
+            if (request()->get('user') == 'all') {
+                $report = Report::join('users', 'reports.user_id', '=', 'users.id')
+                    ->join('activities', 'reports.activity_id', '=', 'activities.id')
+                    ->join('targets', 'reports.target_id', '=', 'targets.id')
+                    ->join('t_keuangans', 'reports.t_keuangan_id', '=', 't_keuangans.id')
+                    ->join('anggarans', 'reports.activity_id', '=', 'anggarans.activity_id')
+                    ->where('t_keuangans.pak_id', session()->get('pak_id'))
+                    ->where('reports.pak_id', session()->get('pak_id'))
+                    ->where('reports.month_id', request()->get('bulan'))
+                    ->where('reports.sumber_dana_id', request()->get('dana'))
+                    ->where('users.isAdmin', 0)
+                    ->get();
+                // dd($report);
+                $anggaran = 0;
+                $paket = 0;
+                $targetfisik = 0;
+                $realisasifisik = 0;
+                $targetkeuangan = 0;
+                $realisasikeuangan = 0;
+                foreach ($report as $key => $value) {
+                    $anggaran += $value->anggaran;
+                    $paket += $value->user->activity->count();
+                    $targetfisik += $value->target->persentase;
+                    $realisasifisik += $value->kegiatan_sekarang;
+                    $targetkeuangan += $value->t_keuangan->anggaran;
+                    $realisasikeuangan += $value->keuangan_sekarang;
+                }
+                $rekap = [
+                    'anggaran' => $anggaran,
+                    'paket' => $paket,
+                    'tgf' => $targetfisik,
+                    'rgf' => $realisasifisik,
+                    'tgu' => $targetkeuangan,
+                    'rgu' => $realisasikeuangan
+                ];
+                $bulan = Month::all();
+                return view('admin.grafik.rakapAdmin', [
+                    'data' => $report ?? [],
+                    'bulan' => $bulan,
+                    'selected' => request()->get('bulan'),
+                    'dana' => SumberDana::all(),
+                    'selectedDana' => request()->get('dana'),
+                    'rekap' => $rekap
+                ]);
+            } else {
+                $report = Report::join('users', 'reports.user_id', '=', 'users.id')
+                    ->join('activities', 'reports.activity_id', '=', 'activities.id')
+                    ->join('targets', 'reports.target_id', '=', 'targets.id')
+                    ->join('t_keuangans', 'reports.t_keuangan_id', '=', 't_keuangans.id')
+                    ->join('anggarans', 'reports.activity_id', '=', 'anggarans.activity_id')
+                    ->where('t_keuangans.pak_id', session()->get('pak_id'))
+                    ->where('reports.pak_id', session()->get('pak_id'))
+                    ->where('reports.month_id', request()->get('bulan'))
+                    ->where('reports.sumber_dana_id', request()->get('dana'))
+                    ->where('users.isAdmin', 0)
+                    ->where('users.kode_SKPD', request()->get('user'))
+                    ->get();
+                // dd($report);
+                $anggaran = 0;
+                $paket = 0;
+                $targetfisik = 0;
+                $realisasifisik = 0;
+                $targetkeuangan = 0;
+                $realisasikeuangan = 0;
+                foreach ($report as $key => $value) {
+                    $anggaran += $value->anggaran;
+                    $paket += $value->user->activity->count();
+                    $targetfisik += $value->target->persentase;
+                    $realisasifisik += $value->kegiatan_sekarang;
+                    $targetkeuangan += $value->t_keuangan->anggaran;
+                    $realisasikeuangan += $value->keuangan_sekarang;
+                }
+                $rekap = [
+                    'anggaran' => $anggaran,
+                    'paket' => $paket,
+                    'tgf' => $targetfisik,
+                    'rgf' => $realisasifisik,
+                    'tgu' => $targetkeuangan,
+                    'rgu' => $realisasikeuangan
+                ];
+                $bulan = Month::all();
+                return view('admin.grafik.rakapAdmin', [
+                    'data' => $report ?? [],
+                    'bulan' => $bulan,
+                    'selected' => request()->get('bulan'),
+                    'dana' => SumberDana::all(),
+                    'selectedDana' => request()->get('dana'),
+                    'rekap' => $rekap
+                ]);
+            }
         }
-
-        $report = Report::join('users', 'reports.user_id', '=', 'users.id')
-            ->join('activities', 'reports.activity_id', '=', 'activities.id')
-            ->join('targets', 'reports.target_id', '=', 'targets.id')
-            ->join('t_keuangans', 'reports.t_keuangan_id', '=', 't_keuangans.id')
-            ->where('t_keuangans.pak_id', session()->get('pak_id'))
-            ->where('status', 1)
-            ->where('reports.pak_id', session()->get('pak_id'))
-            ->where('reports.month_id', request()->get('bulan'))
-            ->where('reports.sumber_dana_id', request()->get('dana'))
-            ->where('users.isAdmin', 0)
-            ->where('users.id', request()->get('user'))
-            ->get();
-        // dd($report);
-        $bulan = Month::all();
-        return view('admin.grafik.rakapAdmin', [
-            'data' => $report ?? [],
-            'bulan' => $bulan,
-            'skpd' => User::where('isAdmin', 0)->get(),
-            'selected' => request()->get('bulan'),
-            'dana' => SumberDana::all(),
-            'selectedDana' => request()->get('dana')
-        ]);
     }
     public function getRekapAdmin(Request $request)
     {

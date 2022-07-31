@@ -17,7 +17,7 @@
                                     {{-- @dd($bulan) --}}
                                     <div class="col-md col-sm col-lg">
                                         <label for="bulan">BULAN:</label>
-                                        <select class="custom-select form-control" id="bulanSelect" name="bulanSelect">
+                                        <select class="form-control" id="bulanSelect" name="bulanSelect">
                                             @for ($i = 0; $i < $batas; $i++)
                                                 <option value="{{ $bulan[$i]->id }}"
                                                     {{ $bulan[$i]->id == $selected->id ? 'selected' : '' }}>
@@ -28,7 +28,7 @@
                                     </div>
                                     <div class="col-md col-sm col-lg">
                                         <label for="dana">SUMBER DANA:</label>
-                                        <select class="custom-select form-control" id="danaSelect" name="danaSelect">
+                                        <select class="form-control" id="danaSelect" name="danaSelect">
                                             <option value="1" {{ $dana == 1 ? 'selected' : '' }}>
                                                 APBD
                                                 Kabupaten Pamekasan</option>
@@ -71,12 +71,13 @@
                                         </thead>
                                         <tbody id="body_report">
                                             @foreach ($data as $item)
+                                            {{-- @dd($item) --}}
                                                 <tr class="data-r">
                                                     <input type="hidden" class="form-control" name="id[]"
                                                         value="{{ $item->id }}">
                                                     <td id="no">{{ $loop->iteration }}</td>
                                                     <td id="kegiatan" style="font-size: 80%">
-                                                        {{ $item->activity->kegiatan }}</td>
+                                                        {{ $item->activity->nama }}</td>
 
                                                     <td id="klalu">
                                                         {{ $item->target->persentase != null ? $item->target->persentase . '%' : '' }}
@@ -87,7 +88,7 @@
                                                             value="{{ $item->kegiatan_sekarang ? $item->kegiatan_sekarang : '' }}">
                                                     </td>
                                                     <td id="anggaran">
-                                                        {{ \FormatUang::format($item->t_keuangan->anggaran) }}
+                                                        Rp.{{ \FormatUang::sisa($item->activity_id, $item->sumber_dana_id)}}
                                                     </td>
                                                     <td id="keuangan" class="text-center">
                                                         <input type="number" name="keuangan[]" id="keuangan"

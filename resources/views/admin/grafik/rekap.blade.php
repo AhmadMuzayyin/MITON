@@ -60,13 +60,14 @@
                                                         {{ number_format(\FormatUang::persen($item ? $item['rKeuangan'] : 0, $anggaran), 2) . '%' }}
                                                     </td>
                                                     <td>
+                                                        {{-- @dd($item['cek']) --}}
                                                         @foreach ($item['cek'] as $status)
-                                                            @if ($status->status == 1)
-                                                            <button class="btn btn-fw btn-sm primary">MELAPOR</button>
-                                                            @else
-                                                            <button class="btn btn-fw btn-sm danger">TIDAK MELAPOR</button>
-                                                            @endif
                                                         @endforeach
+                                                        @if ($status->status == 1)
+                                                        <button class="btn btn-fw btn-sm primary">MELAPOR</button>
+                                                        @else
+                                                        <button class="btn btn-fw btn-sm danger">TIDAK MELAPOR</button>
+                                                        @endif
                                                     </td>
                                                 </tr>
                                             @endforeach
